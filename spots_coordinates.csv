@@ -1,0 +1,59 @@
+name,latitude,longitude,type,activities
+"Cascade Secrète de Test",44.1234,3.5678,waterfall,baignade,randonnée
+"Cetina, Sisačko-Moslavačka, Croatia",43.9686,16.4331,None,None
+"Céligny, Switzerland",46.35069,6.19555,None,None
+"Hôtel des Gorges du Tarn, Restaurant l'Adonis",44.321791631,3.5955365927,None,None
+"Pyrénées Catalanes",42.594543597884,2.010498046875,None,None
+"Isle Sur La Sorgue, 84800",43.915463716632,5.0719427150122,None,None
+"Saint-Bauzille-de-Putois",43.89632,3.73744,None,None
+"Mazères-Sur-Salat, Midi-Pyrenees, France",43.13279,0.97382,None,None
+"Unknown",44.4472,1.4414,None,None
+"Unknown",45.1234,1.7532,None,None
+"Unknown",42.9656,1.6055,None,None
+"Albi, France",43.92621,2.14837,None,None
+"Pyrénées Catalanes",42.594543597884,2.010498046875,None,None
+"Haute-Garonne",43.416666666667,1.5,None,None
+"Aveyron",44.25,2.7,None,None
+"Cascade De La Vis",43.666382798185,3.9186357368843,None,None
+"Cirque de Navacelles",43.89306,3.50972,None,None
+"Bozouls",44.47214,2.72127,None,None
+"Domaine de Verchant Hôtel & Spa",43.622169431465,3.9238434673174,None,None
+"Gouffre de Padirac",44.858203487928,1.7504087090475,None,None
+"Bédeilhac-et-Aynat",42.87375,1.56269,None,None
+"Périgord Vert",45.1777302,0.7245711,None,None
+"Gouffre de Padirac",44.858203487928,1.7504087090475,None,None
+"Toulouse",43.605892128533,1.4472988826938,None,None
+"Les Halles de la Cartoucherie",43.601550294412,1.4070460919988,None,None
+"Pic Du Midi De Bigorre",42.936625050287,0.14162393084831,None,None
+"Saint-Estève, Languedoc-Roussillon, France",42.70908,2.84535,None,None
+"Tempo Latino - Vic Fezensac, Gers",43.593876671036,1.4176093236609,None,None
+"Toulouse, France",43.6044,1.4443,None,None
+"Toulouse, France",43.6044,1.4443,None,None
+"Toulouse, France",43.6044,1.4443,None,None
+"Ariège-Pyrénées",43.154244483076,2.2598972147298,None,None
+"Cascade d'Ars",42.76379792122,1.362171889413,None,None
+"Ariège-Pyrénées",43.154244483076,2.2598972147298,None,None
+"Ariège-Pyrénées",43.154244483076,2.2598972147298,None,None
+"Cévennes",43.962165214457,3.6485160194489,None,None
+"Région Occitanie",43.6004727,1.4436396,None,None
+"Parc National des Cévennes",44.05975,3.60443,None,None
+"Revel, Midi-Pyrenees, France",43.45844,2.00396,None,None
+"Nailloux, Midi-Pyrenees, France",43.35917,1.62384,None,None
+"Castelnaudary",43.318055555556,1.9538888888889,None,None
+"Unknown",44.4472,1.4414,None,None
+"Unknown",45.1234,1.7532,None,None
+"Unknown",42.9656,1.6055,None,None
+"Lac de la Ramée",43.5657,1.4017,lake,swimming
+"Spot Secret Le Fauga",43.3962,1.2526,outdoor_spot,swimming
+"Lac de Caraman",43.5319,1.7592,lake,swimming
+"Lac de Saint-Ferréol",43.4367,2.0256,lake,swimming
+"Clermont-le-Fort Rivière",43.4583,1.4417,river,swimming
+"Lac de la Ganguise",43.3167,1.9167,lake,swimming,sailing
+"Lac de Nailloux",43.3558,1.6244,lake,swimming
+"Lac de la Ramée",43.5657,1.4017,lake,swimming
+"Spot Secret Le Fauga",43.3962,1.2526,outdoor_spot,swimming
+"Spot Secret Le Fauga",43.3962,1.2526,outdoor_spot,swimming
+"Clermont-le-Fort Rivière",43.4583,1.4417,river,swimming
+"Sources chaudes de Mérens-les-Vals",42.6547,1.8339,hot_spring,thermal
+"Sources chaudes de Mérens-les-Vals",42.6547,1.8339,hot_spring,thermal
+"Restaurant Universitaire abandonné Toulouse",43.6108,1.4367,urbex,exploration,graffiti
