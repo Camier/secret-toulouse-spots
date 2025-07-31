@@ -24,13 +24,26 @@
 - **Restaurant Universitaire abandonné** - Toulouse (Security present)
 - **Urbex spots Tarn** - Various abandoned locations
 
-## 📁 Files
+## 📁 Repository Structure
 
-- `hidden_spots.db` - SQLite database with all locations
-- `hidden_spots_export.json` - JSON export of secret spots
-- `spots_coordinates.csv` - CSV with GPS coordinates for mapping
-- `generate_comprehensive_report.py` - Report generator script
-- `reddit_mcp_scraper.py` - Reddit MCP integration scraper
+```
+secret-toulouse-spots/
+├── hidden_spots.db              # SQLite database with all locations
+├── hidden_spots_export.json     # JSON export of secret spots  
+├── spots_coordinates.csv        # CSV with GPS coordinates
+├── run_discovery.sh            # Run complete discovery pipeline
+├── scrapers/                   # All scraper scripts
+│   ├── main_scraper.py        # Main orchestrator
+│   ├── reddit_scraper.py      # Reddit scraper
+│   ├── reddit_mcp_scraper.py  # Reddit with MCP integration
+│   ├── regional_tourism_scraper.py
+│   ├── village_sites_scraper.py
+│   ├── forum_scraper.py
+│   ├── instagram_scraper_secure.py
+│   ├── generate_comprehensive_report.py
+│   ├── visualize_toulouse_spots.py
+│   └── [utilities...]
+└── README.md
 
 ## 🔒 Security Note
 
@@ -42,9 +55,17 @@ These locations are shared by the community. Please:
 
 ## 🗺️ Usage
 
+### Quick Start
+```bash
+# Run complete discovery pipeline
+./run_discovery.sh
+```
+
+### Manual Steps
 1. Import `spots_coordinates.csv` into your mapping app
 2. Use `hidden_spots_export.json` for detailed information
-3. Run `python generate_comprehensive_report.py` for updated analysis
+3. Run scrapers individually from `scrapers/` directory
+4. Generate updated report: `cd scrapers && python generate_comprehensive_report.py`
 
 ---
 *Discovered: July 2025*
