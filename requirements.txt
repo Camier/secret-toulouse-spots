@@ -1,0 +1,37 @@
+# Secret Toulouse Spots - Python Dependencies
+# Generated from code analysis
+
+# Web scraping
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+selenium>=4.15.0
+lxml>=4.9.0
+
+# Reddit API
+praw>=7.7.0
+
+# Instagram API (optional)
+instagrapi>=1.17.0
+
+# Geolocation
+geopy>=2.4.0
+folium>=0.15.0
+gpxpy>=1.6.0
+
+# Natural Language Processing
+spacy>=3.7.0
+nltk>=3.8.0
+
+# Data processing
+pandas>=2.1.0
+numpy>=1.24.0
+
+# Development dependencies
+black>=23.7.0
+isort>=5.12.0
+autoflake>=2.2.0
+
+# Standard library modules (no installation needed):
+# argparse, asyncio, collections, csv, datetime, http, json, 
+# logging, math, os, pathlib, random, re, sqlite3, socketserver,
+# subprocess, sys, time, typing, unicodedata, urllib, webbrowser

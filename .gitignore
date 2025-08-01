@@ -4,25 +4,50 @@ __pycache__/
 *$py.class
 *.so
 .Python
-venv/
 env/
+venv/
+*.egg-info/
+.pytest_cache/
 
-# Database backups
-*.db-journal
-*.db-backup
+# Data files (large JSON exports)
+all_spots_export.json
+filtered_spots_high_relevance.json
+spots_with_relevance.json
+hidden_spots_export.json
+enhanced_spots_with_perimeters.json
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
 
 # Logs
 *.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
 
 # OS
 .DS_Store
 Thumbs.db
 
-# IDE
-.vscode/
-.idea/
-
-# Credentials (if any)
-config.json
-credentials.json
+# Credentials
 .env
+config.ini
+secrets.json
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# Documentation builds
+docs/_build/
+
+# Testing
+.coverage
+htmlcov/
+.tox/

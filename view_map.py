@@ -2,9 +2,9 @@
 """Simple server to view the secret spots map"""
 
 import http.server
+import os
 import socketserver
 import webbrowser
-import os
 
 PORT = 8888
 
@@ -18,5 +18,5 @@ print(f"\n✨ Open your browser to: http://localhost:{PORT}/enhanced-map.html")
 print(f"\nPress Ctrl+C to stop the server\n")
 
 with socketserver.TCPServer(("", PORT), Handler) as httpd:
-    webbrowser.open(f'http://localhost:{PORT}/enhanced-map.html')
+    webbrowser.open(f"http://localhost:{PORT}/enhanced-map.html")
     httpd.serve_forever()

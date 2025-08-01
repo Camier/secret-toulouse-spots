@@ -5,38 +5,41 @@ Update the enhanced map HTML to use relevance filtering and add layer controls
 
 import json
 
+
 def create_relevance_aware_map():
     """Create an updated map configuration"""
-    
+
     # Read the filtered spots
-    with open('filtered_spots_high_relevance.json', 'r', encoding='utf-8') as f:
+    with open("filtered_spots_high_relevance.json", "r", encoding="utf-8") as f:
         spots = json.load(f)
-    
+
     # Process spots to add relevance categories
     for spot in spots:
-        metadata = json.loads(spot['metadata']) if spot['metadata'] else {}
-        relevance_score = metadata.get('relevance_score', 10)  # Default high for non-OSM
-        
+        metadata = json.loads(spot["metadata"]) if spot["metadata"] else {}
+        relevance_score = metadata.get(
+            "relevance_score", 10
+        )  # Default high for non-OSM
+
         # Add relevance category
         if relevance_score >= 7:
-            spot['relevance_category'] = 'high'
-            spot['relevance_label'] = '🌟 Incontournable'
+            spot["relevance_category"] = "high"
+            spot["relevance_label"] = "🌟 Incontournable"
         elif relevance_score >= 5:
-            spot['relevance_category'] = 'medium-high'
-            spot['relevance_label'] = '⭐ Très intéressant'
+            spot["relevance_category"] = "medium-high"
+            spot["relevance_label"] = "⭐ Très intéressant"
         elif relevance_score >= 3:
-            spot['relevance_category'] = 'medium'
-            spot['relevance_label'] = '📍 Intéressant'
+            spot["relevance_category"] = "medium"
+            spot["relevance_label"] = "📍 Intéressant"
         else:
-            spot['relevance_category'] = 'low'
-            spot['relevance_label'] = '🔍 À explorer'
-    
+            spot["relevance_category"] = "low"
+            spot["relevance_label"] = "🔍 À explorer"
+
     # Save enhanced version
-    with open('spots_with_relevance.json', 'w', encoding='utf-8') as f:
+    with open("spots_with_relevance.json", "w", encoding="utf-8") as f:
         json.dump(spots, f, ensure_ascii=False, indent=2)
-    
+
     print(f"✅ Created spots_with_relevance.json with {len(spots)} filtered spots")
-    
+
     # Create JavaScript snippet for layer control
     layer_control_js = """
 // Additional layer controls for relevance filtering
@@ -180,18 +183,21 @@ function createRelevanceMarker(spot) {
     return marker;
 }
 """
-    
+
     # Save the JavaScript enhancement
-    with open('map_relevance_enhancement.js', 'w', encoding='utf-8') as f:
+    with open("map_relevance_enhancement.js", "w", encoding="utf-8") as f:
         f.write(layer_control_js)
-    
+
     print("✅ Created map_relevance_enhancement.js")
-    
+
     # Print usage instructions
     print("\n📝 To integrate with enhanced-map.html:")
-    print("1. Replace 'enhanced_spots_with_perimeters.json' with 'spots_with_relevance.json'")
+    print(
+        "1. Replace 'enhanced_spots_with_perimeters.json' with 'spots_with_relevance.json'"
+    )
     print("2. Add the relevance layer controls from map_relevance_enhancement.js")
     print("3. The map will now show filtered spots with relevance indicators")
+
 
 if __name__ == "__main__":
     create_relevance_aware_map()
