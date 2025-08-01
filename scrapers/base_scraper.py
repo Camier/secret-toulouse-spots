@@ -17,6 +17,14 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+# Import our enhanced modules
+try:
+    from enhanced_coordinate_extractor import EnhancedCoordinateExtractor
+    from spot_data_validator import SpotDataValidator
+    HAS_ENHANCED_MODULES = True
+except ImportError:
+    HAS_ENHANCED_MODULES = False
+
 # Setup logging
 logging.basicConfig(
     level=logging.INFO,
@@ -49,6 +57,14 @@ class BaseScraper(ABC):
         self.session.mount("http://", adapter)
         self.session.mount("https://", adapter)
         
+        # Initialize enhanced modules if available
+        if HAS_ENHANCED_MODULES:
+            self.coord_extractor = EnhancedCoordinateExtractor()
+            self.validator = SpotDataValidator()
+        else:
+            self.coord_extractor = None
+            self.validator = None
+        
     def get_db_connection(self) -> sqlite3.Connection:
         """Get database connection with proper path handling"""
         db_file = self.db_path if self.db_path.is_absolute() else Path(__file__).parent / self.db_path
@@ -65,8 +81,16 @@ class BaseScraper(ABC):
         return random.uniform(*self.rate_limit_delay)
         
     def save_spot(self, spot_data: Dict) -> bool:
-        """Save a single spot to database"""
+        """Save a single spot to database with validation"""
         try:
+            # Validate data if validator available
+            if self.validator:
+                try:
+                    spot_data = self.validator.validate(spot_data)
+                except Exception as e:
+                    self.logger.error(f"Validation failed: {e}")
+                    return False
+            
             conn = self.get_db_connection()
             cursor = conn.cursor()
             
@@ -111,11 +135,16 @@ class BaseScraper(ABC):
         return saved
         
     def extract_coordinates(self, text: str) -> Optional[Tuple[float, float]]:
-        """Extract coordinates from text using common patterns"""
+        """Extract coordinates from text using enhanced patterns"""
+        # Use enhanced extractor if available
+        if self.coord_extractor:
+            return self.coord_extractor.extract_from_text(text)
+        
+        # Fallback to basic extraction
         import re
         
-        # Pattern for decimal coordinates
-        coord_pattern = r"(\d+\.\d+)[,\s]+(-?\d+\.\d+)"
+        # Pattern for decimal coordinates (now includes negative numbers)
+        coord_pattern = r"(-?\d+\.\d+)[,\s]+(-?\d+\.\d+)"
         match = re.search(coord_pattern, text)
         
         if match:

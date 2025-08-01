@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 
 from base_scraper import BaseScraper
-from nlp_location_extractor import extract_french_locations
+from nlp_location_extractor import FrenchLocationExtractor
 
 # Try to import praw for authenticated mode
 try:
@@ -85,6 +85,7 @@ class UnifiedRedditScraper(BaseScraper):
         super().__init__("reddit")
         self.mode = mode
         self.reddit = None
+        self.nlp_extractor = FrenchLocationExtractor()
         
         # Setup for PRAW mode
         if mode == "praw":
@@ -113,9 +114,14 @@ class UnifiedRedditScraper(BaseScraper):
             self.logger.error(f"Failed to initialize Reddit: {e}")
             self.mode = "basic"
             
-    def scrape(self, limit: int = 100, subreddits: Optional[List[str]] = None) -> List[Dict]:
+    def scrape(self, **kwargs) -> List[Dict]:
         """Main scraping method"""
-        subreddits = subreddits or self.SUBREDDITS
+        limit = kwargs.get('limit', 100)
+        subreddits = kwargs.get('subreddits', self.SUBREDDITS)
+        
+        # Handle different parameter names
+        if 'posts_per_sub' in kwargs:
+            limit = kwargs['posts_per_sub']
         
         if self.mode == "praw" and self.reddit:
             return self._scrape_praw(subreddits, limit)
@@ -184,17 +190,19 @@ class UnifiedRedditScraper(BaseScraper):
         full_text = f"{submission.title}\n\n{submission.selftext}"
         
         # Extract locations using NLP
-        locations = extract_french_locations(full_text)
+        location_results = self.nlp_extractor.extract_locations(full_text)
+        locations = [loc['name'] for loc in location_results if loc.get('name')]
         
-        # Extract coordinates
-        coords = self._extract_coordinates(full_text)
+        # Extract coordinates using enhanced extractor from base class
+        coords = self.extract_coordinates(full_text)
         
         # Check comments for additional info
         submission.comments.replace_more(limit=0)
         for comment in submission.comments.list()[:10]:  # Limit to top 10 comments
             if hasattr(comment, 'body'):
-                locations.extend(extract_french_locations(comment.body))
-                comment_coords = self._extract_coordinates(comment.body)
+                comment_locations = self.nlp_extractor.extract_locations(comment.body)
+                locations.extend([loc['name'] for loc in comment_locations if loc.get('name')])
+                comment_coords = self.extract_coordinates(comment.body)
                 if comment_coords and not coords:
                     coords = comment_coords
                     
@@ -243,23 +251,6 @@ class UnifiedRedditScraper(BaseScraper):
             
         return spots
         
-    def _extract_coordinates(self, text: str) -> Optional[Tuple[float, float]]:
-        """Extract coordinates from text"""
-        for pattern in self.COORD_PATTERNS:
-            match = re.search(pattern, text)
-            if match:
-                if len(match.groups()) == 2:
-                    # Decimal format
-                    lat, lon = float(match.group(1)), float(match.group(2))
-                    if self._validate_toulouse_coords(lat, lon):
-                        return lat, lon
-                elif len(match.groups()) == 6:
-                    # DMS format - convert to decimal
-                    lat = float(match.group(1)) + float(match.group(2))/60 + float(match.group(3))/3600
-                    lon = float(match.group(4)) + float(match.group(5))/60 + float(match.group(6))/3600
-                    if self._validate_toulouse_coords(lat, lon):
-                        return lat, lon
-        return None
         
     def _validate_toulouse_coords(self, lat: float, lon: float) -> bool:
         """Validate coordinates are in Toulouse region"""
