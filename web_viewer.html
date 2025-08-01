@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Secret Toulouse Spots Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { height: 100vh; }
+        .legend {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            font-family: Arial, sans-serif;
+        }
+        .legend h4 { margin: 0 0 10px 0; }
+        .legend p { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        // Initialize map centered on Toulouse
+        var map = L.map('map').setView([43.6047, 1.4442], 9);
+        
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Add Toulouse marker
+        L.marker([43.6047, 1.4442], {
+            icon: L.divIcon({
+                html: '⭐',
+                iconSize: [30, 30],
+                className: 'text-center'
+            })
+        }).bindPopup("<b>Toulouse</b><br>Search Center").addTo(map);
+        
+        // Add 200km radius circle
+        L.circle([43.6047, 1.4442], {
+            radius: 200000,
+            color: 'blue',
+            fillColor: '#30f',
+            fillOpacity: 0.1,
+            weight: 2
+        }).bindPopup("200km search perimeter").addTo(map);
+        
+        // Custom icon function
+        function getIcon(type, activities, isHidden) {
+            let emoji = '📍';
+            let color = 'blue';
+            
+            if (isHidden) {
+                color = 'green';
+                if (type.toLowerCase().includes('water') || activities.toLowerCase().includes('swimming')) {
+                    emoji = '💧';
+                } else if (type.toLowerCase().includes('hot') || activities.toLowerCase().includes('thermal')) {
+                    emoji = '♨️';
+                } else if (type.toLowerCase().includes('cave')) {
+                    emoji = '🕳️';
+                } else if (type.toLowerCase().includes('urbex') || type.toLowerCase().includes('abandoned')) {
+                    emoji = '🏚️';
+                } else if (type.toLowerCase().includes('view')) {
+                    emoji = '👁️';
+                } else {
+                    emoji = '🗝️';
+                }
+            }
+            
+            return L.divIcon({
+                html: emoji,
+                iconSize: [25, 25],
+                className: 'text-center'
+            });
+        }
+        
+        // Load spots from JSON
+        fetch('hidden_spots_export.json')
+            .then(response => response.json())
+            .then(spots => {
+                let stats = {hidden: 0, public: 0, total: 0};
+                
+                spots.forEach(spot => {
+                    if (spot.latitude && spot.longitude) {
+                        stats.total++;
+                        if (spot.is_hidden) stats.hidden++;
+                        else stats.public++;
+                        
+                        let icon = getIcon(spot.location_type || '', spot.activities || '', spot.is_hidden);
+                        
+                        let popupContent = `<b>${spot.extracted_name}</b><br>
+                                          Type: ${spot.location_type || 'Unknown'}<br>
+                                          ${spot.is_hidden ? '🔐 Hidden Spot' : '📍 Public Spot'}<br>
+                                          Activities: ${spot.activities || 'Not specified'}<br>
+                                          Source: ${spot.source}`;
+                        
+                        if (spot.discovery_snippet) {
+                            popupContent += `<br><br><i>"${spot.discovery_snippet.substring(0, 100)}..."</i>`;
+                        }
+                        
+                        L.marker([spot.latitude, spot.longitude], {icon: icon})
+                            .bindPopup(popupContent)
+                            .addTo(map);
+                    }
+                });
+                
+                // Add legend
+                var legend = L.control({position: 'bottomleft'});
+                legend.onAdd = function() {
+                    var div = L.DomUtil.create('div', 'legend');
+                    div.innerHTML = `
+                        <h4>Secret Toulouse Spots</h4>
+                        <p>⭐ Toulouse (center)</p>
+                        <p>💧 Water/Swimming spots</p>
+                        <p>♨️ Hot springs</p>
+                        <p>🏚️ Urbex locations</p>
+                        <p>🕳️ Caves</p>
+                        <p>👁️ Viewpoints</p>
+                        <p>🗝️ Other hidden spots</p>
+                        <hr>
+                        <p><b>Total: ${stats.total}</b></p>
+                        <p>Hidden: ${stats.hidden}</p>
+                        <p>Public: ${stats.public}</p>
+                    `;
+                    return div;
+                };
+                legend.addTo(map);
+            })
+            .catch(error => console.error('Error loading spots:', error));
+    </script>
+</body>
+</html>

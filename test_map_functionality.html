@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map Functionality Test</title>
+</head>
+<body>
+    <h1>Testing Enhanced Map Functionality</h1>
+    
+    <div id="results"></div>
+    
+    <script>
+        const resultsDiv = document.getElementById('results');
+        
+        // Test JSON loading
+        fetch('enhanced_spots_with_perimeters.json')
+            .then(response => response.json())
+            .then(data => {
+                const exact = data.filter(s => s.location_type === 'exact').length;
+                const perimeter = data.filter(s => s.location_type === 'perimeter').length;
+                const unknown = data.filter(s => s.location_type === 'unknown').length;
+                
+                resultsDiv.innerHTML += `
+                    <h2>✅ JSON Loading Test Passed</h2>
+                    <ul>
+                        <li>Total spots: ${data.length}</li>
+                        <li>Exact coordinates: ${exact}</li>
+                        <li>Plausible perimeters: ${perimeter}</li>
+                        <li>No location info: ${unknown}</li>
+                    </ul>
+                `;
+                
+                // Test search simulation
+                const searchTerm = 'cascade';
+                const searchResults = data.filter(spot => {
+                    const name = (spot.extracted_name || '').toLowerCase();
+                    const activities = (spot.activities || '').toLowerCase();
+                    const desc = (spot.raw_text || '').toLowerCase();
+                    
+                    return name.includes(searchTerm) || 
+                           activities.includes(searchTerm) || 
+                           desc.includes(searchTerm);
+                });
+                
+                resultsDiv.innerHTML += `
+                    <h2>✅ Search Test Passed</h2>
+                    <ul>
+                        <li>Search term: "${searchTerm}"</li>
+                        <li>Results found: ${searchResults.length}</li>
+                        <li>Example: ${searchResults[0]?.extracted_name || 'None'}</li>
+                    </ul>
+                `;
+                
+                // Test filter simulation
+                const hiddenSpots = data.filter(s => s.is_hidden === 1);
+                const waterSpots = data.filter(s => {
+                    const activities = (s.activities || '').toLowerCase();
+                    const name = (s.extracted_name || '').toLowerCase();
+                    return activities.includes('baignade') || name.includes('cascade');
+                });
+                
+                resultsDiv.innerHTML += `
+                    <h2>✅ Filter Test Passed</h2>
+                    <ul>
+                        <li>Hidden spots: ${hiddenSpots.length}</li>
+                        <li>Water-related spots: ${waterSpots.length}</li>
+                    </ul>
+                `;
+                
+                // Show example perimeter
+                const perimeterExample = data.find(s => s.location_type === 'perimeter');
+                if (perimeterExample) {
+                    resultsDiv.innerHTML += `
+                        <h2>✅ Perimeter Example</h2>
+                        <ul>
+                            <li>Name: ${perimeterExample.extracted_name}</li>
+                            <li>Center: ${perimeterExample.perimeter.center_lat}, ${perimeterExample.perimeter.center_lon}</li>
+                            <li>Radius: ${(perimeterExample.perimeter.radius/1000).toFixed(1)} km</li>
+                            <li>Reference: ${perimeterExample.perimeter.reference}</li>
+                            <li>Confidence: ${perimeterExample.perimeter.confidence}</li>
+                        </ul>
+                    `;
+                }
+            })
+            .catch(error => {
+                resultsDiv.innerHTML = `<h2>❌ Error: ${error.message}</h2>`;
+            });
+    </script>
+</body>
+</html>

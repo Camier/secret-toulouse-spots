@@ -45,7 +45,7 @@ folium.Circle(
 ).add_to(map_toulouse)
 
 # Get locations from database
-conn = sqlite3.connect('hidden_spots.db')
+conn = sqlite3.connect('../hidden_spots.db')
 cursor = conn.cursor()
 
 cursor.execute("""

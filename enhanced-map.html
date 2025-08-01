@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Toulouse Spots - Enhanced Map</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        
+        #map { 
+            height: 100vh; 
+            width: 100%;
+            position: relative;
+        }
+        
+        /* Custom marker styles */
+        .spot-marker {
+            font-size: 28px;
+            text-align: center;
+            line-height: 1;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .spot-marker:hover {
+            transform: scale(1.2);
+        }
+        
+        /* Enhanced popup styles */
+        .leaflet-popup-content-wrapper {
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .leaflet-popup-content {
+            margin: 0;
+            min-width: 280px;
+            max-width: 350px;
+        }
+        
+        .popup-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 16px;
+            margin: -14px -20px 0;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .popup-body {
+            padding: 16px;
+        }
+        
+        /* Control panel */
+        .control-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            padding: 20px;
+            width: 320px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Search box */
+        .search-box {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            width: 400px;
+            max-width: 90%;
+        }
+        
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+        }
+        
+        /* Legend */
+        .legend {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Filter chips */
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            margin: 4px;
+            background: #f3f4f6;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        
+        .filter-chip:hover {
+            background: #e5e7eb;
+        }
+        
+        .filter-chip.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* Weather widget */
+        .weather-widget {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+        
+        /* Loading animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .control-panel {
+                width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
+                top: auto;
+                bottom: 20px;
+                max-height: 50vh;
+            }
+            
+            .search-box {
+                top: auto;
+                bottom: calc(50vh + 40px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading overlay -->
+    <div id="loading" class="loading-overlay">
+        <div>
+            <div class="loader"></div>
+            <p class="mt-4 text-gray-600">Chargement des spots secrets...</p>
+        </div>
+    </div>
+
+    <!-- Map container -->
+    <div id="map"></div>
+    
+    <!-- Search box -->
+    <div class="search-box">
+        <i class="fas fa-search text-gray-400"></i>
+        <input type="text" id="searchInput" placeholder="Rechercher un spot..." autocomplete="off">
+        <button id="clearSearch" class="text-gray-400 hover:text-gray-600" style="display: none;">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <!-- Control panel -->
+    <div class="control-panel">
+        <!-- Weather widget -->
+        <div class="weather-widget" id="weatherWidget">
+            <h3 class="font-semibold text-lg mb-2">
+                <i class="fas fa-cloud-sun mr-2"></i>Météo Toulouse
+            </h3>
+            <div id="weatherData" class="text-sm">
+                Chargement...
+            </div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="mb-4">
+            <h3 class="font-semibold text-lg mb-2 text-gray-800">
+                <i class="fas fa-chart-bar mr-2 text-purple-600"></i>Statistiques
+            </h3>
+            <div id="stats" class="text-sm text-gray-600">
+                <div class="flex justify-between py-1">
+                    <span>Total spots:</span>
+                    <span id="totalSpots" class="font-semibold">0</span>
+                </div>
+                <div class="flex justify-between py-1">
+                    <span>Spots cachés:</span>
+                    <span id="hiddenSpots" class="font-semibold text-purple-600">0</span>
+                </div>
+                <div class="flex justify-between py-1">
+                    <span>Coordonnées exactes:</span>
+                    <span id="exactSpots" class="font-semibold text-green-600">0</span>
+                </div>
+                <div class="flex justify-between py-1">
+                    <span>Zones approximatives:</span>
+                    <span id="perimeterSpots" class="font-semibold text-blue-600">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Filters -->
+        <div class="mb-4">
+            <h3 class="font-semibold text-lg mb-2 text-gray-800">
+                <i class="fas fa-filter mr-2 text-purple-600"></i>Filtres
+            </h3>
+            <div id="filters">
+                <div class="mb-2">
+                    <label class="text-sm text-gray-600">Type de spot:</label>
+                    <div id="typeFilters"></div>
+                </div>
+                <div class="mb-2">
+                    <label class="text-sm text-gray-600">Visibilité:</label>
+                    <div>
+                        <span class="filter-chip" data-filter="visibility" data-value="all">
+                            <i class="fas fa-eye"></i> Tous
+                        </span>
+                        <span class="filter-chip" data-filter="visibility" data-value="hidden">
+                            <i class="fas fa-lock"></i> Cachés
+                        </span>
+                        <span class="filter-chip" data-filter="visibility" data-value="public">
+                            <i class="fas fa-globe"></i> Publics
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label class="text-sm text-gray-600">Affichage:</label>
+                    <div>
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" id="showPerimeters" checked class="mr-2">
+                            <span class="text-sm">Afficher les zones approximatives</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label class="text-sm text-gray-600">Distance max:</label>
+                    <input type="range" id="distanceFilter" min="10" max="200" value="200" 
+                           class="w-full mt-1">
+                    <span id="distanceValue" class="text-sm text-gray-500">200 km</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="space-y-2">
+            <button id="refreshBtn" class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition">
+                <i class="fas fa-sync-alt mr-2"></i>Actualiser
+            </button>
+            <button id="exportBtn" class="w-full bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition">
+                <i class="fas fa-download mr-2"></i>Exporter GPX
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    
+    <script>
+        // Global variables
+        let map, markers, allSpots = [], filteredSpots = [];
+        let perimeters = L.layerGroup(); // Layer for perimeter circles
+        let activeFilters = {
+            type: [],
+            visibility: 'all',
+            distance: 200,
+            search: ''
+        };
+        
+        // Spot type configuration (expanded to handle all types)
+        const spotTypes = {
+            water: { icon: '💧', label: 'Eau/Baignade', color: '#3B82F6' },
+            waterfall: { icon: '🏔️', label: 'Cascade', color: '#10B981' },
+            'hot-spring': { icon: '♨️', label: 'Source chaude', color: '#EF4444' },
+            urbex: { icon: '🏚️', label: 'Urbex', color: '#6B7280' },
+            cave: { icon: '🕳️', label: 'Grotte', color: '#8B5CF6' },
+            viewpoint: { icon: '👁️', label: 'Point de vue', color: '#F59E0B' },
+            forest: { icon: '🌲', label: 'Forêt', color: '#059669' },
+            picnic: { icon: '🧺', label: 'Pique-nique', color: '#EC4899' },
+            nature: { icon: '🌿', label: 'Nature', color: '#10B981' },
+            historic: { icon: '🏛️', label: 'Historique', color: '#8B5CF6' },
+            ruins: { icon: '🏚️', label: 'Ruines', color: '#6B7280' },
+            spring: { icon: '💧', label: 'Source', color: '#3B82F6' },
+            lake: { icon: '🏞️', label: 'Lac', color: '#06B6D4' },
+            mountain: { icon: '⛰️', label: 'Montagne', color: '#7C3AED' },
+            unknown: { icon: '📍', label: 'Autre', color: '#6B7280' }
+        };
+        
+        // Initialize map
+        function initMap() {
+            map = L.map('map', {
+                center: [43.6047, 1.4442],
+                zoom: 9,
+                zoomControl: false
+            });
+            
+            // Add zoom control to bottom left
+            L.control.zoom({ position: 'bottomleft' }).addTo(map);
+            
+            // Add tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            
+            // Add Toulouse marker
+            L.marker([43.6047, 1.4442], {
+                icon: L.divIcon({
+                    html: '<span class="spot-marker">⭐</span>',
+                    iconSize: [35, 35],
+                    className: 'text-center'
+                })
+            }).bindPopup(createPopup({
+                name: 'Toulouse',
+                type: 'city',
+                description: 'Centre de recherche des spots secrets'
+            })).addTo(map);
+            
+            // Add search radius
+            L.circle([43.6047, 1.4442], {
+                radius: 200000,
+                color: '#667eea',
+                fillColor: '#667eea',
+                fillOpacity: 0.1,
+                weight: 2,
+                dashArray: '5, 10'
+            }).addTo(map);
+            
+            // Initialize marker cluster
+            markers = L.markerClusterGroup({
+                maxClusterRadius: 50,
+                spiderfyOnMaxZoom: true,
+                showCoverageOnHover: false,
+                zoomToBoundsOnClick: true
+            });
+            
+            // Add perimeters layer to map
+            perimeters.addTo(map);
+        }
+        
+        // Create popup content
+        function createPopup(spot) {
+            const type = spotTypes[spot.type] || spotTypes.unknown;
+            const isHidden = spot.is_hidden || spot.visibility === 'private';
+            
+            return `
+                <div class="popup-content">
+                    <div class="popup-header">
+                        <h3 class="font-semibold text-lg">${spot.extracted_name || spot.name}</h3>
+                        <p class="text-sm opacity-90">${isHidden ? '🔐 Spot caché' : '📍 Spot public'}</p>
+                    </div>
+                    <div class="popup-body">
+                        <div class="mb-3">
+                            <span class="inline-flex items-center gap-2 text-sm">
+                                <span style="font-size: 20px;">${type.icon}</span>
+                                <span>${type.label}</span>
+                            </span>
+                        </div>
+                        ${spot.activities ? `
+                            <p class="text-sm text-gray-600 mb-2">
+                                <i class="fas fa-hiking mr-1"></i> ${spot.activities}
+                            </p>
+                        ` : ''}
+                        ${spot.discovery_snippet || spot.description ? `
+                            <p class="text-sm text-gray-700 mb-3">
+                                ${(spot.discovery_snippet || spot.description).substring(0, 150)}...
+                            </p>
+                        ` : ''}
+                        <div class="flex gap-2 mt-3">
+                            <button onclick="checkWeather(${spot.latitude}, ${spot.longitude}, '${spot.extracted_name || spot.name}')" 
+                                    class="flex-1 bg-purple-600 text-white py-2 px-3 rounded-lg text-sm hover:bg-purple-700 transition">
+                                <i class="fas fa-cloud-sun mr-1"></i> Météo
+                            </button>
+                            <button onclick="getDirections(${spot.latitude}, ${spot.longitude})" 
+                                    class="flex-1 bg-gray-200 text-gray-700 py-2 px-3 rounded-lg text-sm hover:bg-gray-300 transition">
+                                <i class="fas fa-route mr-1"></i> Itinéraire
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-3">
+                            Source: ${spot.source || 'Unknown'}
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Create popup content for perimeters
+        function createPerimeterPopup(spot) {
+            const type = spotTypes[spot.type] || spotTypes.unknown;
+            const isHidden = spot.is_hidden || spot.visibility === 'private';
+            
+            return `
+                <div class="popup-content">
+                    <div class="popup-header" style="background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);">
+                        <h3 class="font-semibold text-lg">${spot.extracted_name || spot.name}</h3>
+                        <p class="text-sm opacity-90">🎯 Zone approximative</p>
+                    </div>
+                    <div class="popup-body">
+                        <div class="mb-3">
+                            <span class="inline-flex items-center gap-2 text-sm">
+                                <span style="font-size: 20px;">${type.icon}</span>
+                                <span>${type.label}</span>
+                            </span>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3 mb-3">
+                            <p class="text-sm text-gray-600">
+                                <i class="fas fa-map-marker-alt mr-1"></i> ${spot.perimeter.reference}
+                            </p>
+                            <p class="text-sm text-gray-600">
+                                <i class="fas fa-circle-notch mr-1"></i> Rayon: ${(spot.perimeter.radius/1000).toFixed(1)} km
+                            </p>
+                            <p class="text-sm text-gray-600">
+                                <i class="fas fa-info-circle mr-1"></i> Confiance: ${
+                                    spot.perimeter.confidence === 'high' ? '🟢 Élevée' :
+                                    spot.perimeter.confidence === 'medium' ? '🟡 Moyenne' : '🔴 Faible'
+                                }
+                            </p>
+                        </div>
+                        ${spot.raw_text ? `
+                            <p class="text-sm text-gray-700 mb-3">
+                                ${spot.raw_text.substring(0, 200)}...
+                            </p>
+                        ` : ''}
+                        <p class="text-xs text-gray-500 mt-3">
+                            ${isHidden ? '🔐 Spot caché' : '📍 Spot public'} - Source: ${spot.source || 'Unknown'}
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Load spots data
+        async function loadSpots() {
+            try {
+                // Try relevance-filtered version first
+                let response = await fetch('spots_with_relevance.json');
+                if (!response.ok) {
+                    // Fallback to enhanced version
+                    response = await fetch('enhanced_spots_with_perimeters.json');
+                    if (!response.ok) {
+                        response = await fetch('hidden_spots_export.json');
+                    }
+                }
+                allSpots = await response.json();
+                
+                // Process spots
+                allSpots = allSpots.map(spot => {
+                    // Parse metadata if it's a string
+                    if (typeof spot.metadata === 'string') {
+                        try {
+                            spot.metadata = JSON.parse(spot.metadata);
+                        } catch (e) {
+                            spot.metadata = {};
+                        }
+                    }
+                    
+                    // Determine type from activities, name, OSM tags, and location type
+                    let type = 'unknown';
+                    const activities = (spot.activities || '').toLowerCase();
+                    const name = (spot.extracted_name || '').toLowerCase();
+                    const locType = (spot.location_type || '').toLowerCase();
+                    const source = (spot.source || '').toLowerCase();
+                    const osmTags = spot.metadata?.osm_tags || {};
+                    
+                    // First check OSM-specific location types
+                    if (locType === 'water' || activities.includes('baignade') || activities.includes('swimming') || 
+                        name.includes('baignade') || osmTags.natural === 'water' || osmTags.leisure === 'swimming_pool') {
+                        type = 'water';
+                    } else if (locType === 'waterfall' || name.includes('cascade') || source.includes('waterfall') || 
+                               osmTags.waterway === 'waterfall') {
+                        type = 'waterfall';
+                    } else if (name.includes('source chaude') || activities.includes('thermal') || osmTags.natural === 'hot_spring') {
+                        type = 'hot-spring';
+                    } else if (locType === 'spring' || osmTags.natural === 'spring' || source.includes('spring')) {
+                        type = 'spring';
+                    } else if (locType === 'lake' || osmTags.natural === 'lake' || osmTags.water === 'lake') {
+                        type = 'lake';
+                    } else if (locType === 'urbex' || name.includes('abandonn') || osmTags.building === 'ruins' || 
+                               osmTags.historic === 'ruins') {
+                        type = 'urbex';
+                    } else if (locType === 'ruins' || source.includes('ruins') || osmTags.ruins === 'yes') {
+                        type = 'ruins';
+                    } else if (locType === 'cave' || name.includes('grotte') || osmTags.natural === 'cave_entrance') {
+                        type = 'cave';
+                    } else if (locType === 'viewpoint' || name.includes('vue') || name.includes('panorama') || 
+                               osmTags.tourism === 'viewpoint') {
+                        type = 'viewpoint';
+                    } else if (locType === 'historic' || name.includes('château') || osmTags.historic || 
+                               osmTags.heritage === 'yes') {
+                        type = 'historic';
+                    } else if (locType === 'nature' || locType === 'forest' || name.includes('forêt') || 
+                               osmTags.natural === 'wood' || osmTags.landuse === 'forest') {
+                        type = 'nature';
+                    } else if (locType === 'mountain' || osmTags.natural === 'peak') {
+                        type = 'mountain';
+                    } else if (activities.includes('pique-nique') || activities.includes('picnic') || 
+                               osmTags.tourism === 'picnic_site') {
+                        type = 'picnic';
+                    }
+                    
+                    // Fix location_type for filtering
+                    const hasCoords = spot.latitude && spot.longitude;
+                    const locationTypeFixed = hasCoords ? 'exact' : 
+                                            (spot.perimeter ? 'perimeter' : 'unknown');
+                    
+                    return { 
+                        ...spot, 
+                        type,
+                        location_type: locationTypeFixed,
+                        original_location_type: spot.location_type
+                    };
+                });
+                
+                console.log(`Loaded ${allSpots.length} spots`);
+                updateFilters();
+                applyFilters();
+                updateStats();
+                
+                document.getElementById('loading').style.display = 'none';
+            } catch (error) {
+                console.error('Error loading spots:', error);
+                document.getElementById('loading').innerHTML = `
+                    <div class="text-center">
+                        <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+                        <p class="text-gray-600">Erreur lors du chargement des spots</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Update filter UI
+        function updateFilters() {
+            const types = [...new Set(allSpots.map(s => s.type))];
+            const typeFiltersDiv = document.getElementById('typeFilters');
+            
+            typeFiltersDiv.innerHTML = types.map(type => {
+                const config = spotTypes[type] || spotTypes.unknown;
+                return `
+                    <span class="filter-chip" data-filter="type" data-value="${type}">
+                        <span style="font-size: 16px;">${config.icon}</span> ${config.label}
+                    </span>
+                `;
+            }).join('');
+            
+            // Add click handlers
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', handleFilterClick);
+            });
+        }
+        
+        // Handle filter clicks
+        function handleFilterClick(e) {
+            const chip = e.currentTarget;
+            const filterType = chip.dataset.filter;
+            const value = chip.dataset.value;
+            
+            if (filterType === 'type') {
+                const index = activeFilters.type.indexOf(value);
+                if (index > -1) {
+                    activeFilters.type.splice(index, 1);
+                    chip.classList.remove('active');
+                } else {
+                    activeFilters.type.push(value);
+                    chip.classList.add('active');
+                }
+            } else if (filterType === 'visibility') {
+                document.querySelectorAll('[data-filter="visibility"]').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                activeFilters.visibility = value;
+            }
+            
+            applyFilters();
+        }
+        
+        // Apply filters
+        function applyFilters() {
+            filteredSpots = allSpots.filter(spot => {
+                // Check if has location (either exact or perimeter)
+                if (spot.location_type === 'unknown') return false;
+                if (spot.location_type === 'exact' && (!spot.latitude || !spot.longitude)) return false;
+                if (spot.location_type === 'perimeter' && !spot.perimeter) return false;
+                
+                // Type filter
+                if (activeFilters.type.length > 0 && !activeFilters.type.includes(spot.type)) {
+                    return false;
+                }
+                
+                // Visibility filter
+                if (activeFilters.visibility !== 'all') {
+                    const isHidden = spot.is_hidden || spot.visibility === 'private';
+                    if (activeFilters.visibility === 'hidden' && !isHidden) return false;
+                    if (activeFilters.visibility === 'public' && isHidden) return false;
+                }
+                
+                // Distance filter
+                if (spot.location_type === 'exact') {
+                    const distance = getDistance(43.6047, 1.4442, spot.latitude, spot.longitude);
+                    if (distance > activeFilters.distance) return false;
+                } else if (spot.location_type === 'perimeter') {
+                    const distance = getDistance(43.6047, 1.4442, spot.perimeter.center_lat, spot.perimeter.center_lon);
+                    if (distance > activeFilters.distance) return false;
+                }
+                
+                // Search filter
+                if (activeFilters.search) {
+                    const searchLower = activeFilters.search.toLowerCase();
+                    const name = (spot.extracted_name || '').toLowerCase();
+                    const activities = (spot.activities || '').toLowerCase();
+                    const desc = (spot.discovery_snippet || '').toLowerCase();
+                    
+                    if (!name.includes(searchLower) && 
+                        !activities.includes(searchLower) && 
+                        !desc.includes(searchLower)) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+            
+            updateMap();
+            updateStats();
+        }
+        
+        // Update map markers
+        function updateMap() {
+            markers.clearLayers();
+            perimeters.clearLayers();
+            
+            filteredSpots.forEach(spot => {
+                const type = spotTypes[spot.type] || spotTypes.unknown;
+                
+                if (spot.location_type === 'exact' && spot.latitude && spot.longitude) {
+                    // Exact location - add marker
+                    const marker = L.marker([spot.latitude, spot.longitude], {
+                        icon: L.divIcon({
+                            html: `<span class="spot-marker">${type.icon}</span>`,
+                            iconSize: [30, 30],
+                            className: 'text-center'
+                        })
+                    });
+                    
+                    marker.bindPopup(createPopup(spot));
+                    markers.addLayer(marker);
+                    
+                } else if (spot.location_type === 'perimeter' && spot.perimeter) {
+                    // Perimeter - add circle
+                    const perimeter = L.circle(
+                        [spot.perimeter.center_lat, spot.perimeter.center_lon],
+                        {
+                            radius: spot.perimeter.radius,
+                            color: type.color || '#6B7280',
+                            fillColor: type.color || '#6B7280',
+                            fillOpacity: 0.15,
+                            weight: 2,
+                            dashArray: spot.perimeter.confidence === 'high' ? null : '5, 5'
+                        }
+                    );
+                    
+                    // Add perimeter popup
+                    perimeter.bindPopup(createPerimeterPopup(spot));
+                    perimeters.addLayer(perimeter);
+                }
+            });
+            
+            map.addLayer(markers);
+        }
+        
+        // Update statistics
+        function updateStats() {
+            const total = allSpots.length;
+            const hidden = allSpots.filter(s => s.is_hidden || s.visibility === 'private').length;
+            const exact = allSpots.filter(s => s.location_type === 'exact').length;
+            const perimeter = allSpots.filter(s => s.location_type === 'perimeter').length;
+            
+            document.getElementById('totalSpots').textContent = total;
+            document.getElementById('hiddenSpots').textContent = hidden;
+            document.getElementById('exactSpots').textContent = exact;
+            document.getElementById('perimeterSpots').textContent = perimeter;
+        }
+        
+        // Calculate distance between two points
+        function getDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth radius in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+        
+        // Weather functions
+        async function loadWeather() {
+            const weatherData = document.getElementById('weatherData');
+            try {
+                // Demo weather data
+                weatherData.innerHTML = `
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <i class="fas fa-temperature-high mr-1"></i> 22°C
+                        </div>
+                        <div>
+                            <i class="fas fa-cloud-sun mr-1"></i> Ensoleillé
+                        </div>
+                        <div>
+                            <i class="fas fa-wind mr-1"></i> 12 km/h
+                        </div>
+                        <div>
+                            <i class="fas fa-tint mr-1"></i> 65%
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                weatherData.innerHTML = '<p class="text-sm">Météo indisponible</p>';
+            }
+        }
+        
+        async function checkWeather(lat, lon, name) {
+            const weatherDiv = document.getElementById('weatherData');
+            weatherDiv.innerHTML = `
+                <p class="font-semibold mb-2">${name}</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <div><i class="fas fa-temperature-high mr-1"></i> 24°C</div>
+                    <div><i class="fas fa-sun mr-1"></i> Ensoleillé</div>
+                    <div><i class="fas fa-wind mr-1"></i> 8 km/h</div>
+                    <div><i class="fas fa-tint mr-1"></i> 55%</div>
+                </div>
+                <p class="text-xs mt-2 opacity-75">Conditions idéales pour la visite!</p>
+            `;
+        }
+        
+        function getDirections(lat, lon) {
+            window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`, '_blank');
+        }
+        
+        // Export GPX
+        function exportGPX() {
+            // Only export spots with exact coordinates
+            const exactSpots = filteredSpots.filter(spot => 
+                spot.location_type === 'exact' && spot.latitude && spot.longitude
+            );
+            
+            const gpx = `<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Secret Toulouse Spots">
+${exactSpots.map(spot => `  <wpt lat="${spot.latitude}" lon="${spot.longitude}">
+    <name>${spot.extracted_name || spot.name || 'Secret Spot'}</name>
+    <desc>${spot.activities || spot.discovery_snippet || ''}</desc>
+    <type>${spot.type}</type>
+  </wpt>`).join('\n')}
+</gpx>`;
+            
+            const blob = new Blob([gpx], { type: 'application/gpx+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `secret-spots-toulouse-${new Date().toISOString().split('T')[0]}.gpx`;
+            a.click();
+            
+            // Notify user if some spots were excluded
+            const excluded = filteredSpots.length - exactSpots.length;
+            if (excluded > 0) {
+                alert(`Exported ${exactSpots.length} spots with exact coordinates. ${excluded} spots with approximate locations were not included in the GPX file.`);
+            }
+        }
+        
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            loadSpots();
+            loadWeather();
+            
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            const clearSearch = document.getElementById('clearSearch');
+            
+            searchInput.addEventListener('input', (e) => {
+                activeFilters.search = e.target.value;
+                clearSearch.style.display = e.target.value ? 'block' : 'none';
+                applyFilters();
+            });
+            
+            clearSearch.addEventListener('click', () => {
+                searchInput.value = '';
+                activeFilters.search = '';
+                clearSearch.style.display = 'none';
+                applyFilters();
+            });
+            
+            // Distance filter
+            const distanceFilter = document.getElementById('distanceFilter');
+            const distanceValue = document.getElementById('distanceValue');
+            
+            distanceFilter.addEventListener('input', (e) => {
+                activeFilters.distance = parseInt(e.target.value);
+                distanceValue.textContent = `${e.target.value} km`;
+                applyFilters();
+            });
+            
+            // Buttons
+            document.getElementById('refreshBtn').addEventListener('click', () => {
+                location.reload();
+            });
+            
+            document.getElementById('exportBtn').addEventListener('click', exportGPX);
+            
+            // Set default visibility filter
+            document.querySelector('[data-filter="visibility"][data-value="all"]').classList.add('active');
+            
+            // Perimeter toggle
+            document.getElementById('showPerimeters').addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    map.addLayer(perimeters);
+                } else {
+                    map.removeLayer(perimeters);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

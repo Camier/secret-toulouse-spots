@@ -1,0 +1,55 @@
+# Spot Discovery Workflow
+# Discovers new secret spots from various sources
+
+name: spot-discovery
+description: Full pipeline to discover new secret spots around Toulouse
+author: Miko
+version: 1.0
+
+steps:
+  - name: "Backup current database"
+    tool: bash
+    command: "cp hidden_spots.db hidden_spots_backup_$(date +%Y%m%d).db"
+    
+  - name: "Run Reddit scraper"
+    tool: bash
+    command: "cd scrapers && python reddit_mcp_scraper.py"
+    timeout: 300000
+    
+  - name: "Run forum scraper"
+    tool: bash
+    command: "cd scrapers && python forum_scraper.py"
+    timeout: 300000
+    
+  - name: "Run village sites scraper"
+    tool: bash
+    command: "cd scrapers && python village_sites_scraper.py"
+    timeout: 300000
+    
+  - name: "Generate comprehensive report"
+    tool: bash
+    command: "cd scrapers && python generate_comprehensive_report.py"
+    
+  - name: "Update CSV export"
+    tool: bash
+    command: "python scrapers/export_to_csv.py"
+    
+  - name: "Count new discoveries"
+    tool: bash
+    command: |
+      echo "New spots discovered:"
+      sqlite3 hidden_spots.db "SELECT COUNT(*) FROM spots WHERE date(discovered_date) = date('now');"
+      
+  - name: "Update memory with findings"
+    tool: memory
+    action: create_entities
+    entities:
+      - name: "Spot Discovery $(date +%Y-%m-%d)"
+        entityType: "Discovery Session"
+        observations:
+          - "Completed full discovery workflow"
+          - "Sources: Reddit, Forums, Village sites"
+          
+  - name: "Create notification"
+    tool: bash
+    command: "~/scripts/claude/notify.sh complete 'Spot discovery complete: Check report for new findings'"

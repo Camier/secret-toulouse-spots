@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        #map { height: 500px; }
+        #info { padding: 10px; background: #f0f0f0; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div id="info">Loading spots...</div>
+    <div id="map"></div>
+    
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([43.6047, 1.4442], 10);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Load and display spots
+        fetch('spots_with_relevance.json')
+            .then(response => response.json())
+            .then(spots => {
+                document.getElementById('info').innerHTML = `Loaded ${spots.length} spots`;
+                
+                // Add markers
+                let addedCount = 0;
+                spots.forEach(spot => {
+                    if (spot.latitude && spot.longitude) {
+                        L.marker([spot.latitude, spot.longitude])
+                            .bindPopup(`<b>${spot.extracted_name}</b><br>${spot.activities || 'N/A'}`)
+                            .addTo(map);
+                        addedCount++;
+                    }
+                });
+                
+                document.getElementById('info').innerHTML += ` - Added ${addedCount} markers`;
+            })
+            .catch(error => {
+                document.getElementById('info').innerHTML = `Error: ${error}`;
+                console.error(error);
+            });
+    </script>
+</body>
+</html>

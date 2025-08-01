@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" creator="gpx.py -- https://github.com/tkrajina/gpxpy">
+  <metadata>
+    <name>Secret Toulouse Spots</name>
+    <desc>Hidden outdoor locations discovered near Toulouse</desc>
+    <author>
+      <name>Secret Spots Discovery</name>
+    </author>
+    <time>2025-07-31T21:21:26.233184</time>
+  </metadata>
+  <wpt lat="44.1234" lon="3.5678">
+    <name>Cascade Secrète de Test</name>
+    <desc>waterfall - baignade</desc>
+    <sym>Swimming Area</sym>
+  </wpt>
+  <wpt lat="43.9686" lon="16.4331">
+    <name>Cetina, Sisačko-Moslavačka, Croatia</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="46.35069" lon="6.19555">
+    <name>Céligny, Switzerland</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="44.321791631" lon="3.5955365927">
+    <name>Hôtel des Gorges du Tarn, Restaurant l'Adonis</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="42.594543597884" lon="2.010498046875">
+    <name>Pyrénées Catalanes</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.915463716632" lon="5.0719427150122">
+    <name>Isle Sur La Sorgue, 84800</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.89632" lon="3.73744">
+    <name>Saint-Bauzille-de-Putois</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.13279" lon="0.97382">
+    <name>Mazères-Sur-Salat, Midi-Pyrenees, France</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="44.4472" lon="1.4414">
+    <name>Unknown</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="45.1234" lon="1.7532">
+    <name>Unknown</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="42.9656" lon="1.6055">
+    <name>Unknown</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.92621" lon="2.14837">
+    <name>Albi, France</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="42.594543597884" lon="2.010498046875">
+    <name>Pyrénées Catalanes</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.416666666667" lon="1.5">
+    <name>Haute-Garonne</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="44.25" lon="2.7">
+    <name>Aveyron</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.666382798185" lon="3.9186357368843">
+    <name>Cascade De La Vis</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.89306" lon="3.50972">
+    <name>Cirque de Navacelles</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="44.47214" lon="2.72127">
+    <name>Bozouls</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.622169431465" lon="3.9238434673174">
+    <name>Domaine de Verchant Hôtel &amp; Spa</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="44.858203487928" lon="1.7504087090475">
+    <name>Gouffre de Padirac</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="42.87375" lon="1.56269">
+    <name>Bédeilhac-et-Aynat</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="45.1777302" lon="0.7245711">
+    <name>Périgord Vert</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="44.858203487928" lon="1.7504087090475">
+    <name>Gouffre de Padirac</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.605892128533" lon="1.4472988826938">
+    <name>Toulouse</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.601550294412" lon="1.4070460919988">
+    <name>Les Halles de la Cartoucherie</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="42.936625050287" lon="0.14162393084831">
+    <name>Pic Du Midi De Bigorre</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="42.70908" lon="2.84535">
+    <name>Saint-Estève, Languedoc-Roussillon, France</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.593876671036" lon="1.4176093236609">
+    <name>Tempo Latino - Vic Fezensac, Gers</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.6044" lon="1.4443">
+    <name>Toulouse, France</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.6044" lon="1.4443">
+    <name>Toulouse, France</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.6044" lon="1.4443">
+    <name>Toulouse, France</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.154244483076" lon="2.2598972147298">
+    <name>Ariège-Pyrénées</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="42.76379792122" lon="1.362171889413">
+    <name>Cascade d'Ars</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.154244483076" lon="2.2598972147298">
+    <name>Ariège-Pyrénées</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.154244483076" lon="2.2598972147298">
+    <name>Ariège-Pyrénées</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.962165214457" lon="3.6485160194489">
+    <name>Cévennes</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.6004727" lon="1.4436396">
+    <name>Région Occitanie</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="44.05975" lon="3.60443">
+    <name>Parc National des Cévennes</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.45844" lon="2.00396">
+    <name>Revel, Midi-Pyrenees, France</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.35917" lon="1.62384">
+    <name>Nailloux, Midi-Pyrenees, France</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.318055555556" lon="1.9538888888889">
+    <name>Castelnaudary</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="44.4472" lon="1.4414">
+    <name>Unknown</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="45.1234" lon="1.7532">
+    <name>Unknown</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="42.9656" lon="1.6055">
+    <name>Unknown</name>
+    <desc>None - None</desc>
+    <sym>Scenic Area</sym>
+  </wpt>
+  <wpt lat="43.5657" lon="1.4017">
+    <name>Lac de la Ramée</name>
+    <desc>lake - swimming</desc>
+    <sym>Swimming Area</sym>
+  </wpt>
+  <wpt lat="43.3962" lon="1.2526">
+    <name>Spot Secret Le Fauga</name>
+    <desc>outdoor_spot - swimming</desc>
+    <sym>Swimming Area</sym>
+  </wpt>
+  <wpt lat="43.5319" lon="1.7592">
+    <name>Lac de Caraman</name>
+    <desc>lake - swimming</desc>
+    <sym>Swimming Area</sym>
+  </wpt>
+  <wpt lat="43.4367" lon="2.0256">
+    <name>Lac de Saint-Ferréol</name>
+    <desc>lake - swimming</desc>
+    <sym>Swimming Area</sym>
+  </wpt>
+  <wpt lat="43.4583" lon="1.4417">
+    <name>Clermont-le-Fort Rivière</name>
+    <desc>river - swimming</desc>
+    <sym>Swimming Area</sym>
+  </wpt>
+  <wpt lat="43.3167" lon="1.9167">
+    <name>Lac de la Ganguise</name>
+    <desc>lake - swimming</desc>
+    <sym>Swimming Area</sym>
+  </wpt>
+  <wpt lat="43.3558" lon="1.6244">
+    <name>Lac de Nailloux</name>
+    <desc>lake - swimming</desc>
+    <sym>Swimming Area</sym>
+  </wpt>
+  <wpt lat="43.5657" lon="1.4017">
+    <name>Lac de la Ramée</name>
+    <desc>lake - swimming</desc>
+    <sym>Swimming Area</sym>
+  </wpt>
+  <wpt lat="43.3962" lon="1.2526">
+    <name>Spot Secret Le Fauga</name>
+    <desc>outdoor_spot - swimming</desc>
+    <sym>Swimming Area</sym>
+  </wpt>
+  <wpt lat="43.3962" lon="1.2526">
+    <name>Spot Secret Le Fauga</name>
+    <desc>outdoor_spot - swimming</desc>
+    <sym>Swimming Area</sym>
+  </wpt>
+  <wpt lat="43.4583" lon="1.4417">
+    <name>Clermont-le-Fort Rivière</name>
+    <desc>river - swimming</desc>
+    <sym>Swimming Area</sym>
+  </wpt>
+  <wpt lat="42.6547" lon="1.8339">
+    <name>Sources chaudes de Mérens-les-Vals</name>
+    <desc>hot_spring - thermal</desc>
+    <sym>Hot Spring</sym>
+  </wpt>
+  <wpt lat="42.6547" lon="1.8339">
+    <name>Sources chaudes de Mérens-les-Vals</name>
+    <desc>hot_spring - thermal</desc>
+    <sym>Hot Spring</sym>
+  </wpt>
+  <wpt lat="43.6108" lon="1.4367">
+    <name>Restaurant Universitaire abandonné Toulouse</name>
+    <desc>urbex - exploration</desc>
+    <sym>Building</sym>
+  </wpt>
+</gpx>

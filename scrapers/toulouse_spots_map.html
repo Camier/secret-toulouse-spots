@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_922c1611dee39fe6626d5b0459e6da69 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+<div style="position: fixed; 
+     bottom: 50px; left: 50px; width: 250px; height: 150px; 
+     background-color: white; border:2px solid grey; z-index:9999; 
+     font-size:14px; padding: 10px">
+<h4>Toulouse Area Spots</h4>
+<p>⭐ Toulouse (center)</p>
+<p>🟢 Hidden spots within 200km: 23</p>
+<p>🔵 Public spots within 200km: 20</p>
+<p>⚫ Spots outside perimeter: 3</p>
+<p><b>Total locations: 46</b></p>
+</div>
+    
+            <div class="folium-map" id="map_922c1611dee39fe6626d5b0459e6da69" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_922c1611dee39fe6626d5b0459e6da69 = L.map(
+                "map_922c1611dee39fe6626d5b0459e6da69",
+                {
+                    center: [43.6047, 1.4442],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 8,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_9d1049cd28b5a0034c00b04944461dd3 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_9d1049cd28b5a0034c00b04944461dd3.addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var marker_17f0c416bb664e46e980ba0e45dc5bcc = L.marker(
+                [43.6047, 1.4442],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_d5859f3bb538d42a1cb16ba80ca93616 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "star",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4e7194a4ccf14cd0467ae18320c9b1ee = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9807c022f570063236c35c15246d0420 = $(`<div id="html_9807c022f570063236c35c15246d0420" style="width: 100.0%; height: 100.0%;"><b>Toulouse</b><br>Search Center</div>`)[0];
+                popup_4e7194a4ccf14cd0467ae18320c9b1ee.setContent(html_9807c022f570063236c35c15246d0420);
+            
+        
+
+        marker_17f0c416bb664e46e980ba0e45dc5bcc.bindPopup(popup_4e7194a4ccf14cd0467ae18320c9b1ee)
+        ;
+
+        
+    
+    
+            marker_17f0c416bb664e46e980ba0e45dc5bcc.bindTooltip(
+                `<div>
+                     Toulouse
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_17f0c416bb664e46e980ba0e45dc5bcc.setIcon(icon_d5859f3bb538d42a1cb16ba80ca93616);
+            
+    
+            var circle_d18129d8602e399e3cc5b4030cb2f1ef = L.circle(
+                [43.6047, 1.4442],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 200000, "stroke": true, "weight": 3}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+        var popup_2ee62fd5ed4e2676bcb7cd66743a797b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ccfd1ec5a060a0a1295dd4699ebcaace = $(`<div id="html_ccfd1ec5a060a0a1295dd4699ebcaace" style="width: 100.0%; height: 100.0%;">200km search perimeter</div>`)[0];
+                popup_2ee62fd5ed4e2676bcb7cd66743a797b.setContent(html_ccfd1ec5a060a0a1295dd4699ebcaace);
+            
+        
+
+        circle_d18129d8602e399e3cc5b4030cb2f1ef.bindPopup(popup_2ee62fd5ed4e2676bcb7cd66743a797b)
+        ;
+
+        
+    
+    
+            var marker_16fe3db1e8d12d2f37b4d1cf7a8d93ac = L.marker(
+                [43.92621, 2.14837],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_304764950f88c10fb8a987f87ce3af8f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_03581a1ea216ab56d86cacc26567457a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_17652e7b3ae962731eb44f4b82f5b090 = $(`<div id="html_17652e7b3ae962731eb44f4b82f5b090" style="width: 100.0%; height: 100.0%;">     <b>Albi, France</b><br>     Source: instagram<br>     Distance: 66.9km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_03581a1ea216ab56d86cacc26567457a.setContent(html_17652e7b3ae962731eb44f4b82f5b090);
+            
+        
+
+        marker_16fe3db1e8d12d2f37b4d1cf7a8d93ac.bindPopup(popup_03581a1ea216ab56d86cacc26567457a)
+        ;
+
+        
+    
+    
+            marker_16fe3db1e8d12d2f37b4d1cf7a8d93ac.bindTooltip(
+                `<div>
+                     Albi, France (67km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_16fe3db1e8d12d2f37b4d1cf7a8d93ac.setIcon(icon_304764950f88c10fb8a987f87ce3af8f);
+            
+    
+            var marker_9df105017ce61ce1e3420db6c961aa05 = L.marker(
+                [43.154244483076, 2.2598972147298],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_b7ce34e9112c4920e1ac0a83cc01572a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8c2c5cff75c2679447ec947b50e3c344 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_284e62a0295eefec21d329fbf0afa369 = $(`<div id="html_284e62a0295eefec21d329fbf0afa369" style="width: 100.0%; height: 100.0%;">     <b>Ariège-Pyrénées</b><br>     Source: instagram<br>     Distance: 82.8km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_8c2c5cff75c2679447ec947b50e3c344.setContent(html_284e62a0295eefec21d329fbf0afa369);
+            
+        
+
+        marker_9df105017ce61ce1e3420db6c961aa05.bindPopup(popup_8c2c5cff75c2679447ec947b50e3c344)
+        ;
+
+        
+    
+    
+            marker_9df105017ce61ce1e3420db6c961aa05.bindTooltip(
+                `<div>
+                     Ariège-Pyrénées (83km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_9df105017ce61ce1e3420db6c961aa05.setIcon(icon_b7ce34e9112c4920e1ac0a83cc01572a);
+            
+    
+            var marker_4d9a4b4fa232fe6f946f22ff831401f9 = L.marker(
+                [43.154244483076, 2.2598972147298],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_f6ece24481527e960eca6fcdc9ec178b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_abbc2ed6d30d8efbe5f1f5025657c3b4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a26ea234340c4934a41d6f8b3feff493 = $(`<div id="html_a26ea234340c4934a41d6f8b3feff493" style="width: 100.0%; height: 100.0%;">     <b>Ariège-Pyrénées</b><br>     Source: instagram<br>     Distance: 82.8km<br>     📍 Public spot     </div>`)[0];
+                popup_abbc2ed6d30d8efbe5f1f5025657c3b4.setContent(html_a26ea234340c4934a41d6f8b3feff493);
+            
+        
+
+        marker_4d9a4b4fa232fe6f946f22ff831401f9.bindPopup(popup_abbc2ed6d30d8efbe5f1f5025657c3b4)
+        ;
+
+        
+    
+    
+            marker_4d9a4b4fa232fe6f946f22ff831401f9.bindTooltip(
+                `<div>
+                     Ariège-Pyrénées (83km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4d9a4b4fa232fe6f946f22ff831401f9.setIcon(icon_f6ece24481527e960eca6fcdc9ec178b);
+            
+    
+            var marker_315a2d3a20fb3a5c14e1aed38b4aa27e = L.marker(
+                [44.25, 2.7],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_34e7eae192042c12403bdd542002ba22 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7279d68a1109bc5f498f5d0cc0b01ec3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_87b98774390c0b1c6fd5a6dd31d10be6 = $(`<div id="html_87b98774390c0b1c6fd5a6dd31d10be6" style="width: 100.0%; height: 100.0%;">     <b>Aveyron</b><br>     Source: instagram<br>     Distance: 123.5km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_7279d68a1109bc5f498f5d0cc0b01ec3.setContent(html_87b98774390c0b1c6fd5a6dd31d10be6);
+            
+        
+
+        marker_315a2d3a20fb3a5c14e1aed38b4aa27e.bindPopup(popup_7279d68a1109bc5f498f5d0cc0b01ec3)
+        ;
+
+        
+    
+    
+            marker_315a2d3a20fb3a5c14e1aed38b4aa27e.bindTooltip(
+                `<div>
+                     Aveyron (124km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_315a2d3a20fb3a5c14e1aed38b4aa27e.setIcon(icon_34e7eae192042c12403bdd542002ba22);
+            
+    
+            var marker_1216534a063bce0a6fb555fb6a847a99 = L.marker(
+                [44.47214, 2.72127],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_38dcfaf42e4ec377cf9f04aebcbdeb6c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ef520a5172490d2454077b15bb6e3b03 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_444a6d8f0b3b61cace9691bb1202a984 = $(`<div id="html_444a6d8f0b3b61cace9691bb1202a984" style="width: 100.0%; height: 100.0%;">     <b>Bozouls</b><br>     Source: instagram<br>     Distance: 140.4km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_ef520a5172490d2454077b15bb6e3b03.setContent(html_444a6d8f0b3b61cace9691bb1202a984);
+            
+        
+
+        marker_1216534a063bce0a6fb555fb6a847a99.bindPopup(popup_ef520a5172490d2454077b15bb6e3b03)
+        ;
+
+        
+    
+    
+            marker_1216534a063bce0a6fb555fb6a847a99.bindTooltip(
+                `<div>
+                     Bozouls (140km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1216534a063bce0a6fb555fb6a847a99.setIcon(icon_38dcfaf42e4ec377cf9f04aebcbdeb6c);
+            
+    
+            var marker_94e33163f5edb497716660b15aca7481 = L.marker(
+                [42.87375, 1.56269],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_36aa78bec78ffbaa8a0a1a3252f5dc9f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4e979a882e42d3b7de6b89f0a57b1473 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_781c0b598c9849d9d34a2b181a0a81f9 = $(`<div id="html_781c0b598c9849d9d34a2b181a0a81f9" style="width: 100.0%; height: 100.0%;">     <b>Bédeilhac-et-Aynat</b><br>     Source: instagram<br>     Distance: 81.8km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_4e979a882e42d3b7de6b89f0a57b1473.setContent(html_781c0b598c9849d9d34a2b181a0a81f9);
+            
+        
+
+        marker_94e33163f5edb497716660b15aca7481.bindPopup(popup_4e979a882e42d3b7de6b89f0a57b1473)
+        ;
+
+        
+    
+    
+            marker_94e33163f5edb497716660b15aca7481.bindTooltip(
+                `<div>
+                     Bédeilhac-et-Aynat (82km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_94e33163f5edb497716660b15aca7481.setIcon(icon_36aa78bec78ffbaa8a0a1a3252f5dc9f);
+            
+    
+            var marker_dd710feb04a096a1b9ec5848a766bf63 = L.marker(
+                [43.666382798185, 3.9186357368843],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_a59b46634dfe9f45714a4c54d7d2f9ab = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5c42c201fdeeda879eed23995be8e76f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_466c3c382091942a91cbe29bb6b982d7 = $(`<div id="html_466c3c382091942a91cbe29bb6b982d7" style="width: 100.0%; height: 100.0%;">     <b>Cascade De La Vis</b><br>     Source: instagram<br>     Distance: 199.2km<br>     📍 Public spot     </div>`)[0];
+                popup_5c42c201fdeeda879eed23995be8e76f.setContent(html_466c3c382091942a91cbe29bb6b982d7);
+            
+        
+
+        marker_dd710feb04a096a1b9ec5848a766bf63.bindPopup(popup_5c42c201fdeeda879eed23995be8e76f)
+        ;
+
+        
+    
+    
+            marker_dd710feb04a096a1b9ec5848a766bf63.bindTooltip(
+                `<div>
+                     Cascade De La Vis (199km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_dd710feb04a096a1b9ec5848a766bf63.setIcon(icon_a59b46634dfe9f45714a4c54d7d2f9ab);
+            
+    
+            var marker_ed4fd5afa72a370964484e3199b7089d = L.marker(
+                [42.76379792122, 1.362171889413],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_5259e44596f31a6edecabeb007f59d8b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ed77f70d95b79f253a14920c73924ae7 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_fa0f0fafde38888d44ced2c00063404c = $(`<div id="html_fa0f0fafde38888d44ced2c00063404c" style="width: 100.0%; height: 100.0%;">     <b>Cascade d'Ars</b><br>     Source: instagram<br>     Distance: 93.7km<br>     📍 Public spot     </div>`)[0];
+                popup_ed77f70d95b79f253a14920c73924ae7.setContent(html_fa0f0fafde38888d44ced2c00063404c);
+            
+        
+
+        marker_ed4fd5afa72a370964484e3199b7089d.bindPopup(popup_ed77f70d95b79f253a14920c73924ae7)
+        ;
+
+        
+    
+    
+            marker_ed4fd5afa72a370964484e3199b7089d.bindTooltip(
+                `<div>
+                     Cascade d'Ars (94km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ed4fd5afa72a370964484e3199b7089d.setIcon(icon_5259e44596f31a6edecabeb007f59d8b);
+            
+    
+            var marker_fb89a6729875cbc057ca5fc1a8f70698 = L.marker(
+                [43.318055555556, 1.9538888888889],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_ac5c996a172a6b9a74a07244bcc48c3d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_01df789a125313e281b1a5f3aabb1755 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0535c9496a5a6c4849940bec5baeb405 = $(`<div id="html_0535c9496a5a6c4849940bec5baeb405" style="width: 100.0%; height: 100.0%;">     <b>Castelnaudary</b><br>     Source: instagram<br>     Distance: 52.0km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_01df789a125313e281b1a5f3aabb1755.setContent(html_0535c9496a5a6c4849940bec5baeb405);
+            
+        
+
+        marker_fb89a6729875cbc057ca5fc1a8f70698.bindPopup(popup_01df789a125313e281b1a5f3aabb1755)
+        ;
+
+        
+    
+    
+            marker_fb89a6729875cbc057ca5fc1a8f70698.bindTooltip(
+                `<div>
+                     Castelnaudary (52km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_fb89a6729875cbc057ca5fc1a8f70698.setIcon(icon_ac5c996a172a6b9a74a07244bcc48c3d);
+            
+    
+            var marker_13289d57aaebe93f0ea7ea85fdbade7d = L.marker(
+                [43.9686, 16.4331],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_0e6c1a7bf5639f285382377e535608ec = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e88beb22cfbd32cb137e5d82076f925b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d95a1247f849cb9cd66d114a2a1575b6 = $(`<div id="html_d95a1247f849cb9cd66d114a2a1575b6" style="width: 100.0%; height: 100.0%;">     <b>Cetina, Sisačko-Moslavačka, Croatia</b><br>     Source: instagram<br>     Distance: 1202.2km<br>     📍 Public spot     </div>`)[0];
+                popup_e88beb22cfbd32cb137e5d82076f925b.setContent(html_d95a1247f849cb9cd66d114a2a1575b6);
+            
+        
+
+        marker_13289d57aaebe93f0ea7ea85fdbade7d.bindPopup(popup_e88beb22cfbd32cb137e5d82076f925b)
+        ;
+
+        
+    
+    
+            marker_13289d57aaebe93f0ea7ea85fdbade7d.bindTooltip(
+                `<div>
+                     Cetina, Sisačko-Moslavačka, Croatia (1202km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_13289d57aaebe93f0ea7ea85fdbade7d.setIcon(icon_0e6c1a7bf5639f285382377e535608ec);
+            
+    
+            var marker_c32cec0c4c6154e1296eccf6fbb09f75 = L.marker(
+                [43.89306, 3.50972],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_1eb79b627ba37936f5f2c2e5f3409f36 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c9f45969963fdbf2c2d9a8efcb0cc96a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_be1182747a14ed83adf8e8b4a20120be = $(`<div id="html_be1182747a14ed83adf8e8b4a20120be" style="width: 100.0%; height: 100.0%;">     <b>Cirque de Navacelles</b><br>     Source: instagram<br>     Distance: 169.0km<br>     📍 Public spot     </div>`)[0];
+                popup_c9f45969963fdbf2c2d9a8efcb0cc96a.setContent(html_be1182747a14ed83adf8e8b4a20120be);
+            
+        
+
+        marker_c32cec0c4c6154e1296eccf6fbb09f75.bindPopup(popup_c9f45969963fdbf2c2d9a8efcb0cc96a)
+        ;
+
+        
+    
+    
+            marker_c32cec0c4c6154e1296eccf6fbb09f75.bindTooltip(
+                `<div>
+                     Cirque de Navacelles (169km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_c32cec0c4c6154e1296eccf6fbb09f75.setIcon(icon_1eb79b627ba37936f5f2c2e5f3409f36);
+            
+    
+            var marker_6ebba0dff936790cc6e932ec13201a81 = L.marker(
+                [46.35069, 6.19555],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_0a8df0db73b24d95101acd49c2b1d275 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_88aa792002c8f581a122de5d57ad24d0 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c5f2aa2d49ed922e85630e94fb09b135 = $(`<div id="html_c5f2aa2d49ed922e85630e94fb09b135" style="width: 100.0%; height: 100.0%;">     <b>Céligny, Switzerland</b><br>     Source: instagram<br>     Distance: 482.5km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_88aa792002c8f581a122de5d57ad24d0.setContent(html_c5f2aa2d49ed922e85630e94fb09b135);
+            
+        
+
+        marker_6ebba0dff936790cc6e932ec13201a81.bindPopup(popup_88aa792002c8f581a122de5d57ad24d0)
+        ;
+
+        
+    
+    
+            marker_6ebba0dff936790cc6e932ec13201a81.bindTooltip(
+                `<div>
+                     Céligny, Switzerland (482km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_6ebba0dff936790cc6e932ec13201a81.setIcon(icon_0a8df0db73b24d95101acd49c2b1d275);
+            
+    
+            var marker_eb8be6f59b99446c9269df024723e2b0 = L.marker(
+                [43.962165214457, 3.6485160194489],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_16eedf60bd98220893e34a666a31108e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3e944ffb7cbf03a8f9a52803693990ed = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_88f4b117dfbadd5d468e97548bb2c708 = $(`<div id="html_88f4b117dfbadd5d468e97548bb2c708" style="width: 100.0%; height: 100.0%;">     <b>Cévennes</b><br>     Source: instagram<br>     Distance: 181.4km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_3e944ffb7cbf03a8f9a52803693990ed.setContent(html_88f4b117dfbadd5d468e97548bb2c708);
+            
+        
+
+        marker_eb8be6f59b99446c9269df024723e2b0.bindPopup(popup_3e944ffb7cbf03a8f9a52803693990ed)
+        ;
+
+        
+    
+    
+            marker_eb8be6f59b99446c9269df024723e2b0.bindTooltip(
+                `<div>
+                     Cévennes (181km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_eb8be6f59b99446c9269df024723e2b0.setIcon(icon_16eedf60bd98220893e34a666a31108e);
+            
+    
+            var marker_5ace6faa5451168e0a27f41ef94e1f66 = L.marker(
+                [43.622169431465, 3.9238434673174],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_54541121b0d2e414dc18ec270d686514 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d4b6fa37388372b80424dcb9d4389934 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e1969c4a2267244cc178843dde0d0f45 = $(`<div id="html_e1969c4a2267244cc178843dde0d0f45" style="width: 100.0%; height: 100.0%;">     <b>Domaine de Verchant Hôtel & Spa</b><br>     Source: instagram<br>     Distance: 199.6km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_d4b6fa37388372b80424dcb9d4389934.setContent(html_e1969c4a2267244cc178843dde0d0f45);
+            
+        
+
+        marker_5ace6faa5451168e0a27f41ef94e1f66.bindPopup(popup_d4b6fa37388372b80424dcb9d4389934)
+        ;
+
+        
+    
+    
+            marker_5ace6faa5451168e0a27f41ef94e1f66.bindTooltip(
+                `<div>
+                     Domaine de Verchant Hôtel & Spa (200km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_5ace6faa5451168e0a27f41ef94e1f66.setIcon(icon_54541121b0d2e414dc18ec270d686514);
+            
+    
+            var marker_979bd3cd66dc5687e21cf6f2d02e41ec = L.marker(
+                [44.858203487928, 1.7504087090475],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_b026b4526fc28b7675fb2510eb13c917 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_976465a1f1ef7df24edcf7af42751015 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_875fef6b5317e225b22d825a71a4816d = $(`<div id="html_875fef6b5317e225b22d825a71a4816d" style="width: 100.0%; height: 100.0%;">     <b>Gouffre de Padirac</b><br>     Source: instagram<br>     Distance: 141.5km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_976465a1f1ef7df24edcf7af42751015.setContent(html_875fef6b5317e225b22d825a71a4816d);
+            
+        
+
+        marker_979bd3cd66dc5687e21cf6f2d02e41ec.bindPopup(popup_976465a1f1ef7df24edcf7af42751015)
+        ;
+
+        
+    
+    
+            marker_979bd3cd66dc5687e21cf6f2d02e41ec.bindTooltip(
+                `<div>
+                     Gouffre de Padirac (142km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_979bd3cd66dc5687e21cf6f2d02e41ec.setIcon(icon_b026b4526fc28b7675fb2510eb13c917);
+            
+    
+            var marker_ff05117cafdfa3e2195cc21bce693286 = L.marker(
+                [43.416666666667, 1.5],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_c3ce5a3658b8d2d50c0f396b47a9d331 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_09f35b6cf4dcec787d869fae4e935638 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b4d8305a34a21042da036b903bd3fec9 = $(`<div id="html_b4d8305a34a21042da036b903bd3fec9" style="width: 100.0%; height: 100.0%;">     <b>Haute-Garonne</b><br>     Source: instagram<br>     Distance: 21.4km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_09f35b6cf4dcec787d869fae4e935638.setContent(html_b4d8305a34a21042da036b903bd3fec9);
+            
+        
+
+        marker_ff05117cafdfa3e2195cc21bce693286.bindPopup(popup_09f35b6cf4dcec787d869fae4e935638)
+        ;
+
+        
+    
+    
+            marker_ff05117cafdfa3e2195cc21bce693286.bindTooltip(
+                `<div>
+                     Haute-Garonne (21km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ff05117cafdfa3e2195cc21bce693286.setIcon(icon_c3ce5a3658b8d2d50c0f396b47a9d331);
+            
+    
+            var marker_661dc72c1f70baa770dfcb3a9fe06f8d = L.marker(
+                [44.321791631, 3.5955365927],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_cdd75aaed9ccb201fd2275f232c7ee12 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8c9864023a74737bfa99c60f58b62881 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e08e17b7702a151427e16a88444f93cf = $(`<div id="html_e08e17b7702a151427e16a88444f93cf" style="width: 100.0%; height: 100.0%;">     <b>Hôtel des Gorges du Tarn, Restaurant l'Adonis</b><br>     Source: instagram<br>     Distance: 189.7km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_8c9864023a74737bfa99c60f58b62881.setContent(html_e08e17b7702a151427e16a88444f93cf);
+            
+        
+
+        marker_661dc72c1f70baa770dfcb3a9fe06f8d.bindPopup(popup_8c9864023a74737bfa99c60f58b62881)
+        ;
+
+        
+    
+    
+            marker_661dc72c1f70baa770dfcb3a9fe06f8d.bindTooltip(
+                `<div>
+                     Hôtel des Gorges du Tarn, Restaurant l'Adonis (190km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_661dc72c1f70baa770dfcb3a9fe06f8d.setIcon(icon_cdd75aaed9ccb201fd2275f232c7ee12);
+            
+    
+            var marker_0c4f89d53ea1f33c18f935263935cd1a = L.marker(
+                [43.915463716632, 5.0719427150122],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_286d0862dcfe312d382a57b9da55e314 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6b2f5651567ee2c3cb626f99857f3980 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1c67a809d38fa36334341379e34a24c3 = $(`<div id="html_1c67a809d38fa36334341379e34a24c3" style="width: 100.0%; height: 100.0%;">     <b>Isle Sur La Sorgue, 84800</b><br>     Source: instagram<br>     Distance: 293.4km<br>     📍 Public spot     </div>`)[0];
+                popup_6b2f5651567ee2c3cb626f99857f3980.setContent(html_1c67a809d38fa36334341379e34a24c3);
+            
+        
+
+        marker_0c4f89d53ea1f33c18f935263935cd1a.bindPopup(popup_6b2f5651567ee2c3cb626f99857f3980)
+        ;
+
+        
+    
+    
+            marker_0c4f89d53ea1f33c18f935263935cd1a.bindTooltip(
+                `<div>
+                     Isle Sur La Sorgue, 84800 (293km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_0c4f89d53ea1f33c18f935263935cd1a.setIcon(icon_286d0862dcfe312d382a57b9da55e314);
+            
+    
+            var marker_d7ce90792b250f839ff4172eec125353 = L.marker(
+                [43.601550294412, 1.4070460919988],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_780c77c4a669ce2e80b428b7b24939b1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9046416c134aa4ca3502610afc82759b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_af29a3225839db9a754ac0ab8eb943a9 = $(`<div id="html_af29a3225839db9a754ac0ab8eb943a9" style="width: 100.0%; height: 100.0%;">     <b>Les Halles de la Cartoucherie</b><br>     Source: instagram<br>     Distance: 3.0km<br>     📍 Public spot     </div>`)[0];
+                popup_9046416c134aa4ca3502610afc82759b.setContent(html_af29a3225839db9a754ac0ab8eb943a9);
+            
+        
+
+        marker_d7ce90792b250f839ff4172eec125353.bindPopup(popup_9046416c134aa4ca3502610afc82759b)
+        ;
+
+        
+    
+    
+            marker_d7ce90792b250f839ff4172eec125353.bindTooltip(
+                `<div>
+                     Les Halles de la Cartoucherie (3km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d7ce90792b250f839ff4172eec125353.setIcon(icon_780c77c4a669ce2e80b428b7b24939b1);
+            
+    
+            var marker_48c652a6932f2161fde9f8750371828b = L.marker(
+                [43.13279, 0.97382],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_3549fa74f796308901f0ed99b24d805a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3efd3fa6f292c23c68cb761ce6d2534c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_4e0f8335c08b08efe7cf722604c56f1b = $(`<div id="html_4e0f8335c08b08efe7cf722604c56f1b" style="width: 100.0%; height: 100.0%;">     <b>Mazères-Sur-Salat, Midi-Pyrenees, France</b><br>     Source: instagram<br>     Distance: 64.8km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_3efd3fa6f292c23c68cb761ce6d2534c.setContent(html_4e0f8335c08b08efe7cf722604c56f1b);
+            
+        
+
+        marker_48c652a6932f2161fde9f8750371828b.bindPopup(popup_3efd3fa6f292c23c68cb761ce6d2534c)
+        ;
+
+        
+    
+    
+            marker_48c652a6932f2161fde9f8750371828b.bindTooltip(
+                `<div>
+                     Mazères-Sur-Salat, Midi-Pyrenees, France (65km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_48c652a6932f2161fde9f8750371828b.setIcon(icon_3549fa74f796308901f0ed99b24d805a);
+            
+    
+            var marker_bfd176e4e5f218af208af500247fa446 = L.marker(
+                [43.35917, 1.62384],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_4db8bf8202c031a1f128ab660e5f5687 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_512bbb938a967e64462990602933edf1 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8df00809960d8bb96a0ac7f8c86a18f2 = $(`<div id="html_8df00809960d8bb96a0ac7f8c86a18f2" style="width: 100.0%; height: 100.0%;">     <b>Nailloux, Midi-Pyrenees, France</b><br>     Source: instagram<br>     Distance: 30.9km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_512bbb938a967e64462990602933edf1.setContent(html_8df00809960d8bb96a0ac7f8c86a18f2);
+            
+        
+
+        marker_bfd176e4e5f218af208af500247fa446.bindPopup(popup_512bbb938a967e64462990602933edf1)
+        ;
+
+        
+    
+    
+            marker_bfd176e4e5f218af208af500247fa446.bindTooltip(
+                `<div>
+                     Nailloux, Midi-Pyrenees, France (31km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_bfd176e4e5f218af208af500247fa446.setIcon(icon_4db8bf8202c031a1f128ab660e5f5687);
+            
+    
+            var marker_ddf88c383a74516f887b99ba7d47af29 = L.marker(
+                [44.05975, 3.60443],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_5c6518f11e54da09971c09388f5b1ba6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_da195b51a1cf73399182f1068ec553a8 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2208b949e9dd147d0f573520511a4f62 = $(`<div id="html_2208b949e9dd147d0f573520511a4f62" style="width: 100.0%; height: 100.0%;">     <b>Parc National des Cévennes</b><br>     Source: instagram<br>     Distance: 180.5km<br>     📍 Public spot     </div>`)[0];
+                popup_da195b51a1cf73399182f1068ec553a8.setContent(html_2208b949e9dd147d0f573520511a4f62);
+            
+        
+
+        marker_ddf88c383a74516f887b99ba7d47af29.bindPopup(popup_da195b51a1cf73399182f1068ec553a8)
+        ;
+
+        
+    
+    
+            marker_ddf88c383a74516f887b99ba7d47af29.bindTooltip(
+                `<div>
+                     Parc National des Cévennes (181km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ddf88c383a74516f887b99ba7d47af29.setIcon(icon_5c6518f11e54da09971c09388f5b1ba6);
+            
+    
+            var marker_fc5935c6deeff9a79119ec83a03527e0 = L.marker(
+                [42.936625050287, 0.14162393084831],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_5ebf2bc1fc2f5b0574efc36cced19f2f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_cda6824b1b7fc172e90ab1796d08fb97 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_5e4886dcf15adf88cf997955c26fb328 = $(`<div id="html_5e4886dcf15adf88cf997955c26fb328" style="width: 100.0%; height: 100.0%;">     <b>Pic Du Midi De Bigorre</b><br>     Source: instagram<br>     Distance: 129.0km<br>     📍 Public spot     </div>`)[0];
+                popup_cda6824b1b7fc172e90ab1796d08fb97.setContent(html_5e4886dcf15adf88cf997955c26fb328);
+            
+        
+
+        marker_fc5935c6deeff9a79119ec83a03527e0.bindPopup(popup_cda6824b1b7fc172e90ab1796d08fb97)
+        ;
+
+        
+    
+    
+            marker_fc5935c6deeff9a79119ec83a03527e0.bindTooltip(
+                `<div>
+                     Pic Du Midi De Bigorre (129km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_fc5935c6deeff9a79119ec83a03527e0.setIcon(icon_5ebf2bc1fc2f5b0574efc36cced19f2f);
+            
+    
+            var marker_1a482a67d7372d3031e87f8e617d82ac = L.marker(
+                [42.594543597884, 2.010498046875],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_58886ba05fc8577ab6d819226961b5d8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3cf2ff92f1ef31df0fad3a01f3dfc658 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_58212981f14ef2b06784af48bca0d597 = $(`<div id="html_58212981f14ef2b06784af48bca0d597" style="width: 100.0%; height: 100.0%;">     <b>Pyrénées Catalanes</b><br>     Source: instagram<br>     Distance: 121.4km<br>     📍 Public spot     </div>`)[0];
+                popup_3cf2ff92f1ef31df0fad3a01f3dfc658.setContent(html_58212981f14ef2b06784af48bca0d597);
+            
+        
+
+        marker_1a482a67d7372d3031e87f8e617d82ac.bindPopup(popup_3cf2ff92f1ef31df0fad3a01f3dfc658)
+        ;
+
+        
+    
+    
+            marker_1a482a67d7372d3031e87f8e617d82ac.bindTooltip(
+                `<div>
+                     Pyrénées Catalanes (121km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1a482a67d7372d3031e87f8e617d82ac.setIcon(icon_58886ba05fc8577ab6d819226961b5d8);
+            
+    
+            var marker_e48247c5cde2f362fe3489ec80b11de3 = L.marker(
+                [42.594543597884, 2.010498046875],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_118b9589182bd02249e33ab5fce4607d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5e41c035221578e9b662547d33945cf6 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_adbcf43f87916b464344f91fb03e98f1 = $(`<div id="html_adbcf43f87916b464344f91fb03e98f1" style="width: 100.0%; height: 100.0%;">     <b>Pyrénées Catalanes</b><br>     Source: instagram<br>     Distance: 121.4km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_5e41c035221578e9b662547d33945cf6.setContent(html_adbcf43f87916b464344f91fb03e98f1);
+            
+        
+
+        marker_e48247c5cde2f362fe3489ec80b11de3.bindPopup(popup_5e41c035221578e9b662547d33945cf6)
+        ;
+
+        
+    
+    
+            marker_e48247c5cde2f362fe3489ec80b11de3.bindTooltip(
+                `<div>
+                     Pyrénées Catalanes (121km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e48247c5cde2f362fe3489ec80b11de3.setIcon(icon_118b9589182bd02249e33ab5fce4607d);
+            
+    
+            var marker_394a18237b79f3fd816c88dfdb867815 = L.marker(
+                [45.1777302, 0.7245711],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_6980f9153876ab2331c82f2e76636779 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b4030b021409da23242415eb5ae4bd8c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_95013a2340ebad4d7f9435fc36e8949c = $(`<div id="html_95013a2340ebad4d7f9435fc36e8949c" style="width: 100.0%; height: 100.0%;">     <b>Périgord Vert</b><br>     Source: instagram<br>     Distance: 184.0km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_b4030b021409da23242415eb5ae4bd8c.setContent(html_95013a2340ebad4d7f9435fc36e8949c);
+            
+        
+
+        marker_394a18237b79f3fd816c88dfdb867815.bindPopup(popup_b4030b021409da23242415eb5ae4bd8c)
+        ;
+
+        
+    
+    
+            marker_394a18237b79f3fd816c88dfdb867815.bindTooltip(
+                `<div>
+                     Périgord Vert (184km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_394a18237b79f3fd816c88dfdb867815.setIcon(icon_6980f9153876ab2331c82f2e76636779);
+            
+    
+            var marker_88a2477b061f21e605bd35ababf8c232 = L.marker(
+                [43.45844, 2.00396],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_677751ce6c1442f26b301c93e6d99db8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ccf012c083f1523e3e57e564b2ec1059 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6453b4a907f40cec77ba44b1a7f1b8b3 = $(`<div id="html_6453b4a907f40cec77ba44b1a7f1b8b3" style="width: 100.0%; height: 100.0%;">     <b>Revel, Midi-Pyrenees, France</b><br>     Source: instagram<br>     Distance: 48.0km<br>     📍 Public spot     </div>`)[0];
+                popup_ccf012c083f1523e3e57e564b2ec1059.setContent(html_6453b4a907f40cec77ba44b1a7f1b8b3);
+            
+        
+
+        marker_88a2477b061f21e605bd35ababf8c232.bindPopup(popup_ccf012c083f1523e3e57e564b2ec1059)
+        ;
+
+        
+    
+    
+            marker_88a2477b061f21e605bd35ababf8c232.bindTooltip(
+                `<div>
+                     Revel, Midi-Pyrenees, France (48km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_88a2477b061f21e605bd35ababf8c232.setIcon(icon_677751ce6c1442f26b301c93e6d99db8);
+            
+    
+            var marker_fed0b02d341c2df87f832c55a17920b9 = L.marker(
+                [43.6004727, 1.4436396],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_459c154b2c56d3e95520e6fd3d2268f7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d3bb3c765c1d9cf43f51cc1f3f772fe9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f94c50c40babccbc00cd2d28ece8fa51 = $(`<div id="html_f94c50c40babccbc00cd2d28ece8fa51" style="width: 100.0%; height: 100.0%;">     <b>Région Occitanie</b><br>     Source: instagram<br>     Distance: 0.5km<br>     📍 Public spot     </div>`)[0];
+                popup_d3bb3c765c1d9cf43f51cc1f3f772fe9.setContent(html_f94c50c40babccbc00cd2d28ece8fa51);
+            
+        
+
+        marker_fed0b02d341c2df87f832c55a17920b9.bindPopup(popup_d3bb3c765c1d9cf43f51cc1f3f772fe9)
+        ;
+
+        
+    
+    
+            marker_fed0b02d341c2df87f832c55a17920b9.bindTooltip(
+                `<div>
+                     Région Occitanie (0km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_fed0b02d341c2df87f832c55a17920b9.setIcon(icon_459c154b2c56d3e95520e6fd3d2268f7);
+            
+    
+            var marker_4438a4f01d7b7778197ccd20052d5373 = L.marker(
+                [43.89632, 3.73744],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_aa6cb96e71357ae53dd966ceac736f5d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fa47c4d951868c1c0906f0e8f8a529b2 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_4fd23abe898ac0536be138cab7e5b694 = $(`<div id="html_4fd23abe898ac0536be138cab7e5b694" style="width: 100.0%; height: 100.0%;">     <b>Saint-Bauzille-de-Putois</b><br>     Source: instagram<br>     Distance: 187.0km<br>     📍 Public spot     </div>`)[0];
+                popup_fa47c4d951868c1c0906f0e8f8a529b2.setContent(html_4fd23abe898ac0536be138cab7e5b694);
+            
+        
+
+        marker_4438a4f01d7b7778197ccd20052d5373.bindPopup(popup_fa47c4d951868c1c0906f0e8f8a529b2)
+        ;
+
+        
+    
+    
+            marker_4438a4f01d7b7778197ccd20052d5373.bindTooltip(
+                `<div>
+                     Saint-Bauzille-de-Putois (187km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4438a4f01d7b7778197ccd20052d5373.setIcon(icon_aa6cb96e71357ae53dd966ceac736f5d);
+            
+    
+            var marker_6f6fb6bf4356a065f7fb43be4aef1013 = L.marker(
+                [42.70908, 2.84535],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_6c01192001805998667539eead33e3a9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2ae0976ca4eda11831811b0b0bda50de = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a97f0261e2cb9623faa4aabd08623dc5 = $(`<div id="html_a97f0261e2cb9623faa4aabd08623dc5" style="width: 100.0%; height: 100.0%;">     <b>Saint-Estève, Languedoc-Roussillon, France</b><br>     Source: instagram<br>     Distance: 151.1km<br>     📍 Public spot     </div>`)[0];
+                popup_2ae0976ca4eda11831811b0b0bda50de.setContent(html_a97f0261e2cb9623faa4aabd08623dc5);
+            
+        
+
+        marker_6f6fb6bf4356a065f7fb43be4aef1013.bindPopup(popup_2ae0976ca4eda11831811b0b0bda50de)
+        ;
+
+        
+    
+    
+            marker_6f6fb6bf4356a065f7fb43be4aef1013.bindTooltip(
+                `<div>
+                     Saint-Estève, Languedoc-Roussillon, France (151km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_6f6fb6bf4356a065f7fb43be4aef1013.setIcon(icon_6c01192001805998667539eead33e3a9);
+            
+    
+            var marker_3adff6ea7ee0f8b140179d2a4f08424e = L.marker(
+                [43.593876671036, 1.4176093236609],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_32e8c03f8db8aa17a44cbb74f2f353d9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d4d52ec1feb9a3f8a84374ee6b753b29 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ea1e6d86fc2d722440d5b3d71b8f6f0a = $(`<div id="html_ea1e6d86fc2d722440d5b3d71b8f6f0a" style="width: 100.0%; height: 100.0%;">     <b>Tempo Latino - Vic Fezensac, Gers</b><br>     Source: instagram<br>     Distance: 2.5km<br>     📍 Public spot     </div>`)[0];
+                popup_d4d52ec1feb9a3f8a84374ee6b753b29.setContent(html_ea1e6d86fc2d722440d5b3d71b8f6f0a);
+            
+        
+
+        marker_3adff6ea7ee0f8b140179d2a4f08424e.bindPopup(popup_d4d52ec1feb9a3f8a84374ee6b753b29)
+        ;
+
+        
+    
+    
+            marker_3adff6ea7ee0f8b140179d2a4f08424e.bindTooltip(
+                `<div>
+                     Tempo Latino - Vic Fezensac, Gers (2km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3adff6ea7ee0f8b140179d2a4f08424e.setIcon(icon_32e8c03f8db8aa17a44cbb74f2f353d9);
+            
+    
+            var marker_cc8384471e251f733952938fe81e053c = L.marker(
+                [43.605892128533, 1.4472988826938],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_7d23bf2abac3aba6e0bac67da4fd1aa5 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_37178efa3e44b79a092af663a7ae16be = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_13a3b221d3368c7533a8e4cc6fc022fc = $(`<div id="html_13a3b221d3368c7533a8e4cc6fc022fc" style="width: 100.0%; height: 100.0%;">     <b>Toulouse</b><br>     Source: instagram<br>     Distance: 0.3km<br>     📍 Public spot     </div>`)[0];
+                popup_37178efa3e44b79a092af663a7ae16be.setContent(html_13a3b221d3368c7533a8e4cc6fc022fc);
+            
+        
+
+        marker_cc8384471e251f733952938fe81e053c.bindPopup(popup_37178efa3e44b79a092af663a7ae16be)
+        ;
+
+        
+    
+    
+            marker_cc8384471e251f733952938fe81e053c.bindTooltip(
+                `<div>
+                     Toulouse (0km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_cc8384471e251f733952938fe81e053c.setIcon(icon_7d23bf2abac3aba6e0bac67da4fd1aa5);
+            
+    
+            var marker_9277d2091648fb4ffee9097cb80ba6df = L.marker(
+                [43.6044, 1.4443],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_0ba50ead40f3f7289b687760b72619ba = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7c4e48523482e30880b848be6ff7786d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1a87563c6d8f7dcaa3005eaee8291951 = $(`<div id="html_1a87563c6d8f7dcaa3005eaee8291951" style="width: 100.0%; height: 100.0%;">     <b>Toulouse, France</b><br>     Source: instagram<br>     Distance: 0.0km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_7c4e48523482e30880b848be6ff7786d.setContent(html_1a87563c6d8f7dcaa3005eaee8291951);
+            
+        
+
+        marker_9277d2091648fb4ffee9097cb80ba6df.bindPopup(popup_7c4e48523482e30880b848be6ff7786d)
+        ;
+
+        
+    
+    
+            marker_9277d2091648fb4ffee9097cb80ba6df.bindTooltip(
+                `<div>
+                     Toulouse, France (0km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_9277d2091648fb4ffee9097cb80ba6df.setIcon(icon_0ba50ead40f3f7289b687760b72619ba);
+            
+    
+            var marker_7c04117217f409ad65db51dd2f072176 = L.marker(
+                [43.4583, 1.4417],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_98763208e4bdac21158b4efeac47747a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7f8be2c61011ef5aa09714dfbe4157c8 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c8f653cf967f2ec604aa041bff0bfc5e = $(`<div id="html_c8f653cf967f2ec604aa041bff0bfc5e" style="width: 100.0%; height: 100.0%;">     <b>Clermont-le-Fort Rivière</b><br>     Source: reddit<br>     Distance: 16.3km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_7f8be2c61011ef5aa09714dfbe4157c8.setContent(html_c8f653cf967f2ec604aa041bff0bfc5e);
+            
+        
+
+        marker_7c04117217f409ad65db51dd2f072176.bindPopup(popup_7f8be2c61011ef5aa09714dfbe4157c8)
+        ;
+
+        
+    
+    
+            marker_7c04117217f409ad65db51dd2f072176.bindTooltip(
+                `<div>
+                     Clermont-le-Fort Rivière (16km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7c04117217f409ad65db51dd2f072176.setIcon(icon_98763208e4bdac21158b4efeac47747a);
+            
+    
+            var marker_c296fa967e7ad024f8ae14e76d4fcfcc = L.marker(
+                [43.5319, 1.7592],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_7adea8070581ab0be330f7e0570b30cb = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2ae1991367b3268efe7d2f02e6f5e86a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_7617aee44eb1f79f366cc26e4168e422 = $(`<div id="html_7617aee44eb1f79f366cc26e4168e422" style="width: 100.0%; height: 100.0%;">     <b>Lac de Caraman</b><br>     Source: reddit<br>     Distance: 26.6km<br>     📍 Public spot     </div>`)[0];
+                popup_2ae1991367b3268efe7d2f02e6f5e86a.setContent(html_7617aee44eb1f79f366cc26e4168e422);
+            
+        
+
+        marker_c296fa967e7ad024f8ae14e76d4fcfcc.bindPopup(popup_2ae1991367b3268efe7d2f02e6f5e86a)
+        ;
+
+        
+    
+    
+            marker_c296fa967e7ad024f8ae14e76d4fcfcc.bindTooltip(
+                `<div>
+                     Lac de Caraman (27km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_c296fa967e7ad024f8ae14e76d4fcfcc.setIcon(icon_7adea8070581ab0be330f7e0570b30cb);
+            
+    
+            var marker_39819e0aba1232e61ba986d7ae8f34e7 = L.marker(
+                [43.3558, 1.6244],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_db9907d7d8ed98006be9ed39fa92b1b3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_26f23c3982352e4f1c34b6fbd54c7756 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ffafb06f3e94228b2526fa34b86cd991 = $(`<div id="html_ffafb06f3e94228b2526fa34b86cd991" style="width: 100.0%; height: 100.0%;">     <b>Lac de Nailloux</b><br>     Source: reddit<br>     Distance: 31.3km<br>     📍 Public spot     </div>`)[0];
+                popup_26f23c3982352e4f1c34b6fbd54c7756.setContent(html_ffafb06f3e94228b2526fa34b86cd991);
+            
+        
+
+        marker_39819e0aba1232e61ba986d7ae8f34e7.bindPopup(popup_26f23c3982352e4f1c34b6fbd54c7756)
+        ;
+
+        
+    
+    
+            marker_39819e0aba1232e61ba986d7ae8f34e7.bindTooltip(
+                `<div>
+                     Lac de Nailloux (31km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_39819e0aba1232e61ba986d7ae8f34e7.setIcon(icon_db9907d7d8ed98006be9ed39fa92b1b3);
+            
+    
+            var marker_4c488918a1a6d6c15291dd2126edc109 = L.marker(
+                [43.4367, 2.0256],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_0a0dfa52c7ceebaf075f5be4a9af2193 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f54a2ac770e560231a393a8ed31cdded = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9ffc4af207ed41afdff712777d37dce0 = $(`<div id="html_9ffc4af207ed41afdff712777d37dce0" style="width: 100.0%; height: 100.0%;">     <b>Lac de Saint-Ferréol</b><br>     Source: reddit<br>     Distance: 50.5km<br>     📍 Public spot     </div>`)[0];
+                popup_f54a2ac770e560231a393a8ed31cdded.setContent(html_9ffc4af207ed41afdff712777d37dce0);
+            
+        
+
+        marker_4c488918a1a6d6c15291dd2126edc109.bindPopup(popup_f54a2ac770e560231a393a8ed31cdded)
+        ;
+
+        
+    
+    
+            marker_4c488918a1a6d6c15291dd2126edc109.bindTooltip(
+                `<div>
+                     Lac de Saint-Ferréol (50km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4c488918a1a6d6c15291dd2126edc109.setIcon(icon_0a0dfa52c7ceebaf075f5be4a9af2193);
+            
+    
+            var marker_76d2434f04b15b52fd48e9216c8d9569 = L.marker(
+                [43.3167, 1.9167],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_ba8f9ccb17e918ae81e6478c4751d874 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_516eb8259d3e5b295e36f693e1e1a5a3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_dc47e63631a3614c3c441d2342081da5 = $(`<div id="html_dc47e63631a3614c3c441d2342081da5" style="width: 100.0%; height: 100.0%;">     <b>Lac de la Ganguise</b><br>     Source: reddit<br>     Distance: 49.8km<br>     📍 Public spot     </div>`)[0];
+                popup_516eb8259d3e5b295e36f693e1e1a5a3.setContent(html_dc47e63631a3614c3c441d2342081da5);
+            
+        
+
+        marker_76d2434f04b15b52fd48e9216c8d9569.bindPopup(popup_516eb8259d3e5b295e36f693e1e1a5a3)
+        ;
+
+        
+    
+    
+            marker_76d2434f04b15b52fd48e9216c8d9569.bindTooltip(
+                `<div>
+                     Lac de la Ganguise (50km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_76d2434f04b15b52fd48e9216c8d9569.setIcon(icon_ba8f9ccb17e918ae81e6478c4751d874);
+            
+    
+            var marker_4a1081e13005080970e023ea0f9a5d22 = L.marker(
+                [43.5657, 1.4017],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_c880f6e2e2b01070451cb7da0cc28b53 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ef3a6f25ae84d2f0ec64b699002dc191 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_68f0336d810b934c8ed163c158df9d88 = $(`<div id="html_68f0336d810b934c8ed163c158df9d88" style="width: 100.0%; height: 100.0%;">     <b>Lac de la Ramée</b><br>     Source: reddit<br>     Distance: 5.5km<br>     📍 Public spot     </div>`)[0];
+                popup_ef3a6f25ae84d2f0ec64b699002dc191.setContent(html_68f0336d810b934c8ed163c158df9d88);
+            
+        
+
+        marker_4a1081e13005080970e023ea0f9a5d22.bindPopup(popup_ef3a6f25ae84d2f0ec64b699002dc191)
+        ;
+
+        
+    
+    
+            marker_4a1081e13005080970e023ea0f9a5d22.bindTooltip(
+                `<div>
+                     Lac de la Ramée (6km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4a1081e13005080970e023ea0f9a5d22.setIcon(icon_c880f6e2e2b01070451cb7da0cc28b53);
+            
+    
+            var marker_49d6b8cc27a08a2af0ad4f428c625039 = L.marker(
+                [43.6108, 1.4367],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_faea319d3faa940ab9b4586ab33857ee = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5bc250eb2aaedee405ab4c23291c695a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_438999015e2f91e471715ddbb324b7d7 = $(`<div id="html_438999015e2f91e471715ddbb324b7d7" style="width: 100.0%; height: 100.0%;">     <b>Restaurant Universitaire abandonné Toulouse</b><br>     Source: reddit<br>     Distance: 0.9km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_5bc250eb2aaedee405ab4c23291c695a.setContent(html_438999015e2f91e471715ddbb324b7d7);
+            
+        
+
+        marker_49d6b8cc27a08a2af0ad4f428c625039.bindPopup(popup_5bc250eb2aaedee405ab4c23291c695a)
+        ;
+
+        
+    
+    
+            marker_49d6b8cc27a08a2af0ad4f428c625039.bindTooltip(
+                `<div>
+                     Restaurant Universitaire abandonné Toulouse (1km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_49d6b8cc27a08a2af0ad4f428c625039.setIcon(icon_faea319d3faa940ab9b4586ab33857ee);
+            
+    
+            var marker_49c0cb683bbcd7f6ecc85731c2728e5b = L.marker(
+                [42.6547, 1.8339],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_23c709b0027b9a76d3b9692a64bb31cc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_77f30bcc621e3aa3499243f6baa612ec = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c3f6bed2b0a9a18873a43d9b2fcc2075 = $(`<div id="html_c3f6bed2b0a9a18873a43d9b2fcc2075" style="width: 100.0%; height: 100.0%;">     <b>Sources chaudes de Mérens-les-Vals</b><br>     Source: reddit<br>     Distance: 110.3km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_77f30bcc621e3aa3499243f6baa612ec.setContent(html_c3f6bed2b0a9a18873a43d9b2fcc2075);
+            
+        
+
+        marker_49c0cb683bbcd7f6ecc85731c2728e5b.bindPopup(popup_77f30bcc621e3aa3499243f6baa612ec)
+        ;
+
+        
+    
+    
+            marker_49c0cb683bbcd7f6ecc85731c2728e5b.bindTooltip(
+                `<div>
+                     Sources chaudes de Mérens-les-Vals (110km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_49c0cb683bbcd7f6ecc85731c2728e5b.setIcon(icon_23c709b0027b9a76d3b9692a64bb31cc);
+            
+    
+            var marker_d9442552395298fc31451fcc61e5c321 = L.marker(
+                [43.3962, 1.2526],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_0af4009cf66022ccd3637f57496fc93b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ae25bfb3bf891348b86a3a6112bb2ef6 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_43c9f1cc9d65004d30c7e81e69260080 = $(`<div id="html_43c9f1cc9d65004d30c7e81e69260080" style="width: 100.0%; height: 100.0%;">     <b>Spot Secret Le Fauga</b><br>     Source: reddit<br>     Distance: 27.9km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_ae25bfb3bf891348b86a3a6112bb2ef6.setContent(html_43c9f1cc9d65004d30c7e81e69260080);
+            
+        
+
+        marker_d9442552395298fc31451fcc61e5c321.bindPopup(popup_ae25bfb3bf891348b86a3a6112bb2ef6)
+        ;
+
+        
+    
+    
+            marker_d9442552395298fc31451fcc61e5c321.bindTooltip(
+                `<div>
+                     Spot Secret Le Fauga (28km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d9442552395298fc31451fcc61e5c321.setIcon(icon_0af4009cf66022ccd3637f57496fc93b);
+            
+    
+            var marker_0c17aaf2f55e59e64d496c5ff8b8b427 = L.marker(
+                [44.4472, 1.4414],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_25702b23399b66408bc7d372e6d2c6f0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_55176a2031e951df9602e9147663241b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_032299ae2ce364d38e1d4e5b76dd9d94 = $(`<div id="html_032299ae2ce364d38e1d4e5b76dd9d94" style="width: 100.0%; height: 100.0%;">     <b>Unknown</b><br>     Source: reddit<br>     Distance: 93.7km<br>     📍 Public spot     </div>`)[0];
+                popup_55176a2031e951df9602e9147663241b.setContent(html_032299ae2ce364d38e1d4e5b76dd9d94);
+            
+        
+
+        marker_0c17aaf2f55e59e64d496c5ff8b8b427.bindPopup(popup_55176a2031e951df9602e9147663241b)
+        ;
+
+        
+    
+    
+            marker_0c17aaf2f55e59e64d496c5ff8b8b427.bindTooltip(
+                `<div>
+                     Unknown (94km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_0c17aaf2f55e59e64d496c5ff8b8b427.setIcon(icon_25702b23399b66408bc7d372e6d2c6f0);
+            
+    
+            var marker_11b5d0b813de2cd5b6b35aee25c0c2a3 = L.marker(
+                [45.1234, 1.7532],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_b23cc4da40e0ed33ba2a0e42f605f300 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8bcd49dbe67f156552630de7c290f8d5 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f060da0e50189617c5c48d3bad9903f1 = $(`<div id="html_f060da0e50189617c5c48d3bad9903f1" style="width: 100.0%; height: 100.0%;">     <b>Unknown</b><br>     Source: reddit<br>     Distance: 170.6km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_8bcd49dbe67f156552630de7c290f8d5.setContent(html_f060da0e50189617c5c48d3bad9903f1);
+            
+        
+
+        marker_11b5d0b813de2cd5b6b35aee25c0c2a3.bindPopup(popup_8bcd49dbe67f156552630de7c290f8d5)
+        ;
+
+        
+    
+    
+            marker_11b5d0b813de2cd5b6b35aee25c0c2a3.bindTooltip(
+                `<div>
+                     Unknown (171km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_11b5d0b813de2cd5b6b35aee25c0c2a3.setIcon(icon_b23cc4da40e0ed33ba2a0e42f605f300);
+            
+    
+            var marker_bb20a0a1e5bba63ffe549bc0793c3e9e = L.marker(
+                [42.9656, 1.6055],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_547fc76051cde30fc27611f6e659e412 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5a44e51c6470710f457a6ceb55d49973 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ea71555e353309e6c2bc1368e662392a = $(`<div id="html_ea71555e353309e6c2bc1368e662392a" style="width: 100.0%; height: 100.0%;">     <b>Unknown</b><br>     Source: reddit<br>     Distance: 72.3km<br>     📍 Public spot     </div>`)[0];
+                popup_5a44e51c6470710f457a6ceb55d49973.setContent(html_ea71555e353309e6c2bc1368e662392a);
+            
+        
+
+        marker_bb20a0a1e5bba63ffe549bc0793c3e9e.bindPopup(popup_5a44e51c6470710f457a6ceb55d49973)
+        ;
+
+        
+    
+    
+            marker_bb20a0a1e5bba63ffe549bc0793c3e9e.bindTooltip(
+                `<div>
+                     Unknown (72km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_bb20a0a1e5bba63ffe549bc0793c3e9e.setIcon(icon_547fc76051cde30fc27611f6e659e412);
+            
+    
+            var marker_b4dce59cdb33e956177335d7c378fdeb = L.marker(
+                [44.1234, 3.5678],
+                {
+}
+            ).addTo(map_922c1611dee39fe6626d5b0459e6da69);
+        
+    
+            var icon_dae10d25e494955e83ffb6c7c380f3e6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "key",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9c18c0a906cf3aef35d7de0891919502 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e4d51109346780b8f7f5f1e74b3cb08e = $(`<div id="html_e4d51109346780b8f7f5f1e74b3cb08e" style="width: 100.0%; height: 100.0%;">     <b>Cascade Secrète de Test</b><br>     Source: test<br>     Distance: 179.7km<br>     🗝️ Hidden spot     </div>`)[0];
+                popup_9c18c0a906cf3aef35d7de0891919502.setContent(html_e4d51109346780b8f7f5f1e74b3cb08e);
+            
+        
+
+        marker_b4dce59cdb33e956177335d7c378fdeb.bindPopup(popup_9c18c0a906cf3aef35d7de0891919502)
+        ;
+
+        
+    
+    
+            marker_b4dce59cdb33e956177335d7c378fdeb.bindTooltip(
+                `<div>
+                     Cascade Secrète de Test (180km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b4dce59cdb33e956177335d7c378fdeb.setIcon(icon_dae10d25e494955e83ffb6c7c380f3e6);
+            
+</script>
+</html>

@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-08-01T00:53:06.586567",
+  "total_spots": 53,
+  "with_coordinates": 20,
+  "without_coordinates": 33,
+  "by_type": {
+    "historic": 3,
+    "nature": 5,
+    "other": 15,
+    "recreation": 1,
+    "urbex": 4,
+    "viewpoint": 2,
+    "water": 23
+  },
+  "by_source": {
+    "geocaching_manual": 6,
+    "instagram": 6,
+    "reddit_AskFrance": 3,
+    "reddit_Urbex": 2,
+    "reddit_france": 12,
+    "reddit_randonnee": 1,
+    "reddit_toulouse": 12,
+    "reddit_urbanexploration": 2,
+    "reddit_urbex": 1,
+    "tourism_occitanie_tourism": 4,
+    "tourism_toulouse_tourism": 3,
+    "tourism_tourisme_haute-garonne": 1
+  },
+  "standardization_complete": true
+}
