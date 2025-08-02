@@ -1,0 +1,21 @@
+{
+  "name": "secret-toulouse-spots",
+  "version": "1.0.0",
+  "description": "Interactive map of secret outdoor spots around Toulouse",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests configured yet\" && exit 0"
+  },
+  "keywords": [
+    "toulouse",
+    "map",
+    "leaflet",
+    "outdoor"
+  ],
+  "author": "Miko",
+  "license": "MIT",
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3"
+  }
+}

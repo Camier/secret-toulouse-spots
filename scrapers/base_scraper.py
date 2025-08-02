@@ -6,6 +6,7 @@ Provides common functionality for rate limiting, logging, and database operation
 
 import json
 import logging
+import random
 import sqlite3
 import time
 from abc import ABC, abstractmethod
@@ -31,6 +32,30 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 
+# User-agent rotation pool
+USER_AGENTS = [
+    # Desktop browsers
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 14.2.1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15',
+    
+    # Mobile browsers
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 17_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1',
+    'Mozilla/5.0 (Linux; Android 13; SM-S908B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.144 Mobile Safari/537.36',
+    'Mozilla/5.0 (iPad; CPU OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/120.0.6099.119 Mobile/15E148 Safari/604.1',
+    
+    # Alternative browsers
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0',
+    'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 OPR/106.0.0.0',
+    
+    # Research/Academic user agents (more honest)
+    'SecretSpotsScraper/1.0 (Educational Research; +https://github.com/example/spots)',
+    'Mozilla/5.0 (compatible; AcademicCrawler/1.0; +https://university.edu/research)',
+]
+
 
 class BaseScraper(ABC):
     """Base class for all scrapers with common functionality"""
@@ -43,9 +68,8 @@ class BaseScraper(ABC):
         
         # Setup requests session with retry logic
         self.session = requests.Session()
-        self.session.headers.update({
-            'User-Agent': 'SecretSpotsScraper/1.0 (Educational Research)'
-        })
+        # Use random user agent on initialization
+        self._rotate_user_agent()
         
         # Add retry logic
         retry_strategy = Retry(
@@ -77,8 +101,27 @@ class BaseScraper(ABC):
         
     def _get_random_delay(self) -> float:
         """Get random delay between min and max"""
-        import random
         return random.uniform(*self.rate_limit_delay)
+    
+    def _rotate_user_agent(self):
+        """Rotate to a new random user agent"""
+        new_agent = random.choice(USER_AGENTS)
+        self.session.headers.update({
+            'User-Agent': new_agent
+        })
+        self.logger.debug(f"Rotated to user agent: {new_agent[:50]}...")
+    
+    def make_request(self, url: str, **kwargs) -> requests.Response:
+        """Make HTTP request with automatic user-agent rotation"""
+        # Rotate user agent occasionally (10% chance)
+        if random.random() < 0.1:
+            self._rotate_user_agent()
+        
+        # Apply rate limiting
+        self.rate_limit()
+        
+        # Make request
+        return self.session.get(url, **kwargs)
         
     def save_spot(self, spot_data: Dict) -> bool:
         """Save a single spot to database with validation"""

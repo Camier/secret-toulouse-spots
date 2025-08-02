@@ -7,8 +7,9 @@
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+    <!-- Use local marker cluster CSS for better control -->
+    <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.css"/>
+    <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -306,7 +307,8 @@
 
     <!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <!-- Use local marker cluster JS for consistency -->
+    <script src="node_modules/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
     
     <script>
         // Global variables
@@ -377,12 +379,46 @@
                 dashArray: '5, 10'
             }).addTo(map);
             
-            // Initialize marker cluster
+            // Initialize optimized marker cluster with performance settings
             markers = L.markerClusterGroup({
-                maxClusterRadius: 50,
+                // Performance optimizations
+                chunkedLoading: true,          // Enable chunked loading for better performance
+                chunkInterval: 50,             // Time interval between chunk processing
+                chunkDelay: 25,               // Delay between chunks
+                
+                // Clustering behavior
+                maxClusterRadius: 80,          // Increased for better grouping
                 spiderfyOnMaxZoom: true,
                 showCoverageOnHover: false,
-                zoomToBoundsOnClick: true
+                zoomToBoundsOnClick: true,
+                
+                // Visual optimization
+                animate: true,                 // Smooth animations
+                animateAddingMarkers: false,   // Disable animation when adding many markers
+                
+                // Custom cluster icon
+                iconCreateFunction: function(cluster) {
+                    const count = cluster.getChildCount();
+                    let size = 'small';
+                    let className = 'marker-cluster-small';
+                    
+                    if (count < 10) {
+                        size = 'small';
+                        className = 'marker-cluster-small';
+                    } else if (count < 100) {
+                        size = 'medium';
+                        className = 'marker-cluster-medium';
+                    } else {
+                        size = 'large';
+                        className = 'marker-cluster-large';
+                    }
+                    
+                    return new L.DivIcon({
+                        html: '<div><span>' + count + '</span></div>',
+                        className: 'marker-cluster ' + className,
+                        iconSize: new L.Point(40, 40)
+                    });
+                }
             });
             
             // Add perimeters layer to map
@@ -673,48 +709,109 @@
             updateStats();
         }
         
-        // Update map markers
+        // Update map markers with progressive loading
         function updateMap() {
             markers.clearLayers();
             perimeters.clearLayers();
             
-            filteredSpots.forEach(spot => {
-                const type = spotTypes[spot.type] || spotTypes.unknown;
-                
-                if (spot.location_type === 'exact' && spot.latitude && spot.longitude) {
-                    // Exact location - add marker
-                    const marker = L.marker([spot.latitude, spot.longitude], {
-                        icon: L.divIcon({
-                            html: `<span class="spot-marker">${type.icon}</span>`,
-                            iconSize: [30, 30],
-                            className: 'text-center'
-                        })
-                    });
-                    
-                    marker.bindPopup(createPopup(spot));
-                    markers.addLayer(marker);
-                    
-                } else if (spot.location_type === 'perimeter' && spot.perimeter) {
-                    // Perimeter - add circle
-                    const perimeter = L.circle(
-                        [spot.perimeter.center_lat, spot.perimeter.center_lon],
-                        {
-                            radius: spot.perimeter.radius,
-                            color: type.color || '#6B7280',
-                            fillColor: type.color || '#6B7280',
-                            fillOpacity: 0.15,
-                            weight: 2,
-                            dashArray: spot.perimeter.confidence === 'high' ? null : '5, 5'
-                        }
-                    );
-                    
-                    // Add perimeter popup
-                    perimeter.bindPopup(createPerimeterPopup(spot));
-                    perimeters.addLayer(perimeter);
-                }
-            });
+            // Show loading progress
+            const loadingDiv = document.getElementById('loading');
+            loadingDiv.style.display = 'block';
+            loadingDiv.innerHTML = `
+                <div class="text-center">
+                    <i class="fas fa-spinner fa-spin text-4xl text-purple-600 mb-4"></i>
+                    <p class="text-gray-600">Chargement des marqueurs...</p>
+                    <div class="w-64 h-2 bg-gray-200 rounded-full mt-4 overflow-hidden">
+                        <div id="loadingBar" class="h-full bg-purple-600 transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <p id="loadingText" class="text-sm text-gray-500 mt-2">0 / ${filteredSpots.length} spots</p>
+                </div>
+            `;
             
-            map.addLayer(markers);
+            // Implement progressive loading with chunks
+            const chunkSize = 500; // Process 500 markers at a time
+            const chunks = [];
+            
+            // Create chunks
+            for (let i = 0; i < filteredSpots.length; i += chunkSize) {
+                chunks.push(filteredSpots.slice(i, i + chunkSize));
+            }
+            
+            let currentChunk = 0;
+            let totalProcessed = 0;
+            
+            function processNextChunk() {
+                if (currentChunk >= chunks.length) {
+                    // All chunks processed
+                    map.addLayer(markers);
+                    loadingDiv.style.display = 'none';
+                    return;
+                }
+                
+                const chunk = chunks[currentChunk];
+                const markersToAdd = [];
+                
+                chunk.forEach(spot => {
+                    const type = spotTypes[spot.type] || spotTypes.unknown;
+                    
+                    if (spot.location_type === 'exact' && spot.latitude && spot.longitude) {
+                        // Exact location - add marker
+                        const marker = L.marker([spot.latitude, spot.longitude], {
+                            icon: L.divIcon({
+                                html: `<span class="spot-marker">${type.icon}</span>`,
+                                iconSize: [30, 30],
+                                className: 'text-center'
+                            })
+                        });
+                        
+                        marker.bindPopup(createPopup(spot));
+                        markersToAdd.push(marker);
+                        
+                    } else if (spot.location_type === 'perimeter' && spot.perimeter) {
+                        // Perimeter - add circle
+                        const perimeter = L.circle(
+                            [spot.perimeter.center_lat, spot.perimeter.center_lon],
+                            {
+                                radius: spot.perimeter.radius,
+                                color: type.color || '#6B7280',
+                                fillColor: type.color || '#6B7280',
+                                fillOpacity: 0.15,
+                                weight: 2,
+                                dashArray: spot.perimeter.confidence === 'high' ? null : '5, 5'
+                            }
+                        );
+                        
+                        // Add perimeter popup
+                        perimeter.bindPopup(createPerimeterPopup(spot));
+                        perimeters.addLayer(perimeter);
+                    }
+                    
+                    totalProcessed++;
+                });
+                
+                // Add markers in batch
+                if (markersToAdd.length > 0) {
+                    markers.addLayers(markersToAdd);
+                }
+                
+                // Update progress
+                const progress = (totalProcessed / filteredSpots.length) * 100;
+                document.getElementById('loadingBar').style.width = progress + '%';
+                document.getElementById('loadingText').textContent = `${totalProcessed} / ${filteredSpots.length} spots`;
+                
+                currentChunk++;
+                
+                // Process next chunk with requestAnimationFrame for smooth UI
+                requestAnimationFrame(processNextChunk);
+            }
+            
+            // Start processing
+            if (filteredSpots.length > 0) {
+                processNextChunk();
+            } else {
+                map.addLayer(markers);
+                loadingDiv.style.display = 'none';
+            }
         }
         
         // Update statistics
