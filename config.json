@@ -1,0 +1,89 @@
+{
+  "database": {
+    "path": "hidden_spots.db",
+    "pool_size": 5,
+    "max_overflow": 10,
+    "pool_timeout": 30,
+    "query_timeout": 30,
+    "enable_foreign_keys": true
+  },
+  "map": {
+    "enable_clustering": true,
+    "disable_clustering_zoom": 16,
+    "cluster_radius": 80,
+    "chunk_size": 100,
+    "progressive_loading": true,
+    "viewport_optimization": true,
+    "viewport_padding": 0.2,
+    "default_center": [43.6047, 1.4442],
+    "default_zoom": 11,
+    "min_zoom": 7,
+    "max_zoom": 18
+  },
+  "logging": {
+    "level": "INFO",
+    "console": true,
+    "file": true,
+    "structured": false,
+    "log_dir": "logs",
+    "max_bytes": 10485760,
+    "backup_count": 5,
+    "module_levels": {
+      "scrapers": "DEBUG",
+      "validators": "INFO",
+      "database": "WARNING"
+    }
+  },
+  "reddit": {
+    "name": "reddit",
+    "min_delay": 2.0,
+    "max_delay": 5.0,
+    "max_retries": 5,
+    "backoff_factor": 1.5,
+    "max_concurrent_requests": 5,
+    "request_timeout": 30,
+    "rotate_user_agents": true,
+    "user_agent_rotation_rate": 0.1,
+    "session_expire_hours": 24,
+    "persist_cookies": true,
+    "enable_anti_detection": true,
+    "randomize_fingerprint": true,
+    "simulate_human_behavior": true,
+    "subreddits": [
+      "toulouse", "Toulouse", "hautegaronne", "Occitanie",
+      "randonee", "camping", "urbex", "france"
+    ],
+    "search_terms": [
+      "spot secret", "endroit caché", "lieu abandonné",
+      "baignade sauvage", "spot baignade", "cascade",
+      "point de vue", "randonnée", "urbex toulouse"
+    ]
+  },
+  "instagram": {
+    "name": "instagram",
+    "min_delay": 3.0,
+    "max_delay": 8.0,
+    "max_retries": 3,
+    "backoff_factor": 2.0,
+    "max_concurrent_requests": 5,
+    "request_timeout": 30,
+    "rotate_user_agents": true,
+    "user_agent_rotation_rate": 0.1,
+    "session_expire_hours": 24,
+    "persist_cookies": true,
+    "enable_anti_detection": true,
+    "randomize_fingerprint": true,
+    "simulate_human_behavior": true,
+    "hashtags": [
+      "#toulousesecret", "#spotsecret", "#toulousehidden"
+    ]
+  },
+  "debug": false,
+  "testing": false,
+  "coordinate_bounds": {
+    "min_lat": 42.5,
+    "max_lat": 44.5,
+    "min_lon": -1.0,
+    "max_lon": 3.0
+  }
+}

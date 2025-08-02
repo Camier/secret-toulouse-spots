@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Toulouse Spots - Viewport Optimized</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        #map { 
+            height: 100vh; 
+            z-index: 1;
+        }
+        
+        .spot-marker {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .marker-cluster {
+            background-color: rgba(110, 204, 57, 0.6);
+            position: relative;
+        }
+        
+        .marker-cluster div {
+            background-color: rgba(90, 180, 50, 0.8);
+            color: white;
+            font-weight: bold;
+        }
+        
+        .marker-cluster span {
+            line-height: 30px;
+        }
+
+        /* Large clusters */
+        .marker-cluster-large {
+            background-color: rgba(241, 211, 87, 0.6);
+        }
+        .marker-cluster-large div {
+            background-color: rgba(240, 194, 12, 0.8);
+        }
+
+        /* Huge clusters */
+        .marker-cluster-huge {
+            background-color: rgba(253, 156, 115, 0.6);
+        }
+        .marker-cluster-huge div {
+            background-color: rgba(241, 128, 23, 0.8);
+        }
+        
+        /* Stats panel */
+        .stats-panel {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Loading overlay */
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Viewport info */
+        #viewportInfo {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 8px;
+            z-index: 1000;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay">
+        <div class="text-center">
+            <div class="text-4xl mb-4">🗺️</div>
+            <h2 class="text-xl font-semibold mb-2">Chargement des spots secrets...</h2>
+            <div class="w-64 bg-gray-200 rounded-full h-2 mb-2">
+                <div id="loadingBar" class="bg-blue-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <p id="loadingText" class="text-sm text-gray-600">Initialisation...</p>
+        </div>
+    </div>
+
+    <!-- Map Container -->
+    <div id="map"></div>
+    
+    <!-- Control Panel -->
+    <div class="absolute top-4 right-4 z-[1000] space-y-4">
+        <!-- Stats Panel -->
+        <div class="stats-panel rounded-lg shadow-lg p-4 w-80">
+            <h3 class="font-bold text-lg mb-3 flex items-center">
+                <i class="fas fa-chart-bar mr-2"></i> Statistiques
+            </h3>
+            <div class="grid grid-cols-2 gap-3 text-sm">
+                <div class="bg-gray-50 p-3 rounded">
+                    <div class="text-2xl font-bold text-blue-600" id="totalSpots">0</div>
+                    <div class="text-gray-600">Spots totaux</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <div class="text-2xl font-bold text-purple-600" id="visibleSpots">0</div>
+                    <div class="text-gray-600">Spots visibles</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <div class="text-2xl font-bold text-green-600" id="renderedMarkers">0</div>
+                    <div class="text-gray-600">Marqueurs affichés</div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <div class="text-2xl font-bold text-orange-600" id="clustersCount">0</div>
+                    <div class="text-gray-600">Clusters</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Filter Panel -->
+        <div class="stats-panel rounded-lg shadow-lg p-4 w-80">
+            <h3 class="font-bold text-lg mb-3 flex items-center">
+                <i class="fas fa-filter mr-2"></i> Filtres
+            </h3>
+            
+            <!-- Type Filter -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2">Type de spot</label>
+                <select id="typeFilter" class="w-full p-2 border rounded-lg">
+                    <option value="all">Tous les types</option>
+                    <option value="water">💧 Points d'eau</option>
+                    <option value="waterfall">🏔️ Cascades</option>
+                    <option value="viewpoint">👁️ Points de vue</option>
+                    <option value="urbex">🏚️ Urbex</option>
+                    <option value="nature">🌳 Nature</option>
+                    <option value="historic">🏛️ Historique</option>
+                    <option value="cave">🕳️ Grottes</option>
+                </select>
+            </div>
+            
+            <!-- Visibility Filter -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2">Visibilité</label>
+                <select id="visibilityFilter" class="w-full p-2 border rounded-lg">
+                    <option value="all">Tous</option>
+                    <option value="hidden">🔐 Cachés uniquement</option>
+                    <option value="public">📍 Publics uniquement</option>
+                </select>
+            </div>
+            
+            <!-- Performance Mode -->
+            <div class="mb-4">
+                <label class="flex items-center">
+                    <input type="checkbox" id="performanceMode" checked class="mr-2">
+                    <span class="text-sm">Mode performance (viewport)</span>
+                </label>
+                <p class="text-xs text-gray-500 mt-1">Affiche uniquement les spots visibles</p>
+            </div>
+            
+            <button id="applyFilters" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                Appliquer les filtres
+            </button>
+        </div>
+    </div>
+    
+    <!-- Viewport Info -->
+    <div id="viewportInfo">
+        <div class="font-semibold mb-1">Viewport Info</div>
+        <div class="text-xs space-y-1">
+            <div>Zoom: <span id="zoomLevel">13</span></div>
+            <div>Bounds: <span id="boundsInfo">...</span></div>
+            <div>Mode: <span id="renderMode">Viewport</span></div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    
+    <script>
+        // Global variables
+        let map;
+        let markers;
+        let allSpots = [];
+        let filteredSpots = [];
+        let visibleSpots = [];
+        let currentBounds = null;
+        let performanceMode = true;
+        let renderTimeout = null;
+        
+        // Spot type definitions
+        const spotTypes = {
+            water: { icon: '💧', color: '#3B82F6', name: 'Point d\'eau' },
+            waterfall: { icon: '🏔️', color: '#10B981', name: 'Cascade' },
+            'hot-spring': { icon: '♨️', color: '#EF4444', name: 'Source chaude' },
+            spring: { icon: '💦', color: '#06B6D4', name: 'Source' },
+            lake: { icon: '🏞️', color: '#6366F1', name: 'Lac' },
+            urbex: { icon: '🏚️', color: '#6B7280', name: 'Urbex' },
+            ruins: { icon: '🏛️', color: '#8B5CF6', name: 'Ruines' },
+            cave: { icon: '🕳️', color: '#1F2937', name: 'Grotte' },
+            viewpoint: { icon: '👁️', color: '#F59E0B', name: 'Point de vue' },
+            historic: { icon: '🏛️', color: '#92400E', name: 'Historique' },
+            nature: { icon: '🌳', color: '#059669', name: 'Nature' },
+            mountain: { icon: '⛰️', color: '#7C3AED', name: 'Montagne' },
+            picnic: { icon: '🧺', color: '#34D399', name: 'Pique-nique' },
+            unknown: { icon: '📍', color: '#9CA3AF', name: 'Autre' }
+        };
+        
+        // Initialize map
+        function initMap() {
+            // Create map centered on Toulouse
+            map = L.map('map', {
+                preferCanvas: true, // Better performance for many markers
+                updateWhenZooming: false,
+                updateWhenIdle: true
+            }).setView([43.6047, 1.4442], 13);
+            
+            // Add tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+            
+            // Initialize marker cluster group
+            markers = L.markerClusterGroup({
+                chunkedLoading: true,
+                chunkInterval: 50,
+                chunkDelay: 25,
+                maxClusterRadius: 80,
+                disableClusteringAtZoom: 16,
+                animateAddingMarkers: false,
+                removeOutsideVisibleBounds: true, // Key for viewport optimization
+                iconCreateFunction: function(cluster) {
+                    const count = cluster.getChildCount();
+                    let size = 'small';
+                    let className = 'marker-cluster marker-cluster-';
+                    
+                    if (count < 10) {
+                        size = 'small';
+                    } else if (count < 50) {
+                        size = 'medium';
+                    } else if (count < 100) {
+                        size = 'large';
+                        className += 'large';
+                    } else {
+                        size = 'large';
+                        className += 'huge';
+                    }
+                    
+                    return L.divIcon({
+                        html: '<div><span>' + count + '</span></div>',
+                        className: className,
+                        iconSize: L.point(40, 40)
+                    });
+                }
+            });
+            
+            // Add event listeners
+            map.on('moveend', onMapMove);
+            map.on('zoomend', onMapMove);
+            
+            // Initial bounds
+            currentBounds = map.getBounds();
+            updateViewportInfo();
+        }
+        
+        // Create popup content
+        function createPopup(spot) {
+            const isHidden = spot.is_hidden || spot.visibility === 'private';
+            const type = spotTypes[spot.type] || spotTypes.unknown;
+            
+            return `
+                <div class="popup-content" style="max-width: 300px;">
+                    <div class="p-3">
+                        <h3 class="font-bold text-lg mb-2 flex items-center">
+                            <span class="text-2xl mr-2">${type.icon}</span>
+                            ${spot.extracted_name || 'Spot Secret'}
+                        </h3>
+                        <div class="space-y-2 text-sm">
+                            <p class="flex items-center text-gray-600">
+                                <i class="fas fa-tag mr-2"></i> ${type.name}
+                            </p>
+                            ${spot.activities ? `
+                                <p class="flex items-center text-gray-600">
+                                    <i class="fas fa-hiking mr-2"></i> ${spot.activities}
+                                </p>
+                            ` : ''}
+                        </div>
+                        ${spot.raw_text ? `
+                            <p class="text-sm text-gray-700 mt-3">
+                                ${spot.raw_text.substring(0, 200)}...
+                            </p>
+                        ` : ''}
+                        <p class="text-xs text-gray-500 mt-3">
+                            ${isHidden ? '🔐 Spot caché' : '📍 Spot public'} - Source: ${spot.source || 'Unknown'}
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Check if spot is in viewport bounds
+        function isInBounds(spot, bounds) {
+            if (!spot.latitude || !spot.longitude) return false;
+            return bounds.contains([spot.latitude, spot.longitude]);
+        }
+        
+        // Get spots visible in current viewport
+        function getVisibleSpots(spots, bounds) {
+            return spots.filter(spot => isInBounds(spot, bounds));
+        }
+        
+        // Render markers for visible spots only
+        function renderVisibleMarkers() {
+            if (!performanceMode) {
+                // Render all markers (traditional mode)
+                renderAllMarkers();
+                return;
+            }
+            
+            // Clear existing markers
+            markers.clearLayers();
+            
+            // Get current bounds with padding
+            const bounds = map.getBounds();
+            const paddedBounds = bounds.pad(0.2); // 20% padding
+            
+            // Filter visible spots
+            visibleSpots = getVisibleSpots(filteredSpots, paddedBounds);
+            
+            // Update stats
+            document.getElementById('visibleSpots').textContent = visibleSpots.length;
+            
+            // Create markers for visible spots
+            const markersToAdd = [];
+            visibleSpots.forEach(spot => {
+                const type = spotTypes[spot.type] || spotTypes.unknown;
+                
+                if (spot.latitude && spot.longitude) {
+                    const marker = L.marker([spot.latitude, spot.longitude], {
+                        icon: L.divIcon({
+                            html: `<span class="spot-marker">${type.icon}</span>`,
+                            iconSize: [30, 30],
+                            className: 'text-center'
+                        })
+                    });
+                    
+                    marker.bindPopup(createPopup(spot));
+                    markersToAdd.push(marker);
+                }
+            });
+            
+            // Add markers in batch
+            if (markersToAdd.length > 0) {
+                markers.addLayers(markersToAdd);
+            }
+            
+            // Add to map if not already
+            if (!map.hasLayer(markers)) {
+                map.addLayer(markers);
+            }
+            
+            // Update rendered markers count
+            updateRenderedCount();
+        }
+        
+        // Render all markers (traditional mode)
+        function renderAllMarkers() {
+            markers.clearLayers();
+            
+            const markersToAdd = [];
+            filteredSpots.forEach(spot => {
+                const type = spotTypes[spot.type] || spotTypes.unknown;
+                
+                if (spot.latitude && spot.longitude) {
+                    const marker = L.marker([spot.latitude, spot.longitude], {
+                        icon: L.divIcon({
+                            html: `<span class="spot-marker">${type.icon}</span>`,
+                            iconSize: [30, 30],
+                            className: 'text-center'
+                        })
+                    });
+                    
+                    marker.bindPopup(createPopup(spot));
+                    markersToAdd.push(marker);
+                }
+            });
+            
+            markers.addLayers(markersToAdd);
+            
+            if (!map.hasLayer(markers)) {
+                map.addLayer(markers);
+            }
+            
+            visibleSpots = filteredSpots;
+            document.getElementById('visibleSpots').textContent = visibleSpots.length;
+            updateRenderedCount();
+        }
+        
+        // Update rendered markers count
+        function updateRenderedCount() {
+            setTimeout(() => {
+                const renderedMarkers = markers.getLayers().length;
+                const clusters = document.querySelectorAll('.marker-cluster').length;
+                
+                document.getElementById('renderedMarkers').textContent = renderedMarkers;
+                document.getElementById('clustersCount').textContent = clusters;
+            }, 100);
+        }
+        
+        // Handle map movement
+        function onMapMove() {
+            if (!performanceMode) return;
+            
+            // Debounce rendering
+            clearTimeout(renderTimeout);
+            renderTimeout = setTimeout(() => {
+                currentBounds = map.getBounds();
+                renderVisibleMarkers();
+                updateViewportInfo();
+            }, 200);
+        }
+        
+        // Update viewport info display
+        function updateViewportInfo() {
+            const zoom = map.getZoom();
+            const bounds = map.getBounds();
+            
+            document.getElementById('zoomLevel').textContent = zoom;
+            document.getElementById('boundsInfo').textContent = 
+                `${bounds.getSouth().toFixed(3)}, ${bounds.getWest().toFixed(3)} - 
+                 ${bounds.getNorth().toFixed(3)}, ${bounds.getEast().toFixed(3)}`;
+            document.getElementById('renderMode').textContent = 
+                performanceMode ? 'Viewport' : 'All';
+        }
+        
+        // Apply filters
+        function applyFilters() {
+            const typeFilter = document.getElementById('typeFilter').value;
+            const visibilityFilter = document.getElementById('visibilityFilter').value;
+            
+            filteredSpots = allSpots.filter(spot => {
+                // Type filter
+                if (typeFilter !== 'all' && spot.type !== typeFilter) {
+                    return false;
+                }
+                
+                // Visibility filter
+                const isHidden = spot.is_hidden || spot.visibility === 'private';
+                if (visibilityFilter === 'hidden' && !isHidden) return false;
+                if (visibilityFilter === 'public' && isHidden) return false;
+                
+                return true;
+            });
+            
+            // Re-render markers
+            if (performanceMode) {
+                renderVisibleMarkers();
+            } else {
+                renderAllMarkers();
+            }
+        }
+        
+        // Load spots data
+        async function loadSpots() {
+            try {
+                // Update loading text
+                document.getElementById('loadingText').textContent = 'Chargement des données...';
+                
+                // Try relevance-filtered version first
+                let response = await fetch('spots_with_relevance.json');
+                if (!response.ok) {
+                    response = await fetch('hidden_spots_export.json');
+                }
+                
+                allSpots = await response.json();
+                
+                // Process spots
+                document.getElementById('loadingText').textContent = 'Traitement des spots...';
+                document.getElementById('loadingBar').style.width = '50%';
+                
+                allSpots = allSpots.map(spot => {
+                    // Parse metadata if string
+                    if (typeof spot.metadata === 'string') {
+                        try {
+                            spot.metadata = JSON.parse(spot.metadata);
+                        } catch (e) {
+                            spot.metadata = {};
+                        }
+                    }
+                    
+                    // Determine type
+                    let type = 'unknown';
+                    const activities = (spot.activities || '').toLowerCase();
+                    const name = (spot.extracted_name || '').toLowerCase();
+                    const locType = (spot.location_type || '').toLowerCase();
+                    const osmTags = spot.metadata?.osm_tags || {};
+                    
+                    // Type detection logic (simplified)
+                    if (locType === 'water' || activities.includes('swimming') || 
+                        osmTags.natural === 'water') {
+                        type = 'water';
+                    } else if (name.includes('cascade') || osmTags.waterway === 'waterfall') {
+                        type = 'waterfall';
+                    } else if (name.includes('abandonn') || osmTags.building === 'ruins') {
+                        type = 'urbex';
+                    } else if (name.includes('grotte') || osmTags.natural === 'cave_entrance') {
+                        type = 'cave';
+                    } else if (name.includes('vue') || osmTags.tourism === 'viewpoint') {
+                        type = 'viewpoint';
+                    } else if (osmTags.historic || name.includes('château')) {
+                        type = 'historic';
+                    } else if (locType === 'forest' || osmTags.natural === 'wood') {
+                        type = 'nature';
+                    }
+                    
+                    return { ...spot, type };
+                });
+                
+                // Initialize filtered spots
+                filteredSpots = [...allSpots];
+                
+                // Update stats
+                document.getElementById('totalSpots').textContent = allSpots.length;
+                document.getElementById('loadingBar').style.width = '75%';
+                
+                // Initial render
+                document.getElementById('loadingText').textContent = 'Affichage des marqueurs...';
+                renderVisibleMarkers();
+                
+                // Hide loading
+                document.getElementById('loadingBar').style.width = '100%';
+                setTimeout(() => {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error loading spots:', error);
+                document.getElementById('loadingText').textContent = 'Erreur de chargement!';
+            }
+        }
+        
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+            loadSpots();
+            
+            // Event listeners
+            document.getElementById('applyFilters').addEventListener('click', applyFilters);
+            
+            document.getElementById('performanceMode').addEventListener('change', function(e) {
+                performanceMode = e.target.checked;
+                if (performanceMode) {
+                    renderVisibleMarkers();
+                } else {
+                    renderAllMarkers();
+                }
+                updateViewportInfo();
+            });
+            
+            // Auto-apply filters on change
+            document.getElementById('typeFilter').addEventListener('change', applyFilters);
+            document.getElementById('visibilityFilter').addEventListener('change', applyFilters);
+        });
+    </script>
+</body>
+</html>

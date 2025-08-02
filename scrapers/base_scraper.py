@@ -20,11 +20,15 @@ from urllib3.util.retry import Retry
 
 # Import our enhanced modules
 try:
-    from enhanced_coordinate_extractor import EnhancedCoordinateExtractor
-    from spot_data_validator import SpotDataValidator
+    from .enhanced_coordinate_extractor import EnhancedCoordinateExtractor
+    from .spot_data_validator import SpotDataValidator
+    from .data_validator import SpotDataValidator as EnhancedValidator
+    from .rate_limiter import RateLimiter, ScraperRateLimiters
+    from .session_manager import SessionManager
     HAS_ENHANCED_MODULES = True
 except ImportError:
     HAS_ENHANCED_MODULES = False
+    from .data_validator import SpotDataValidator as EnhancedValidator
 
 # Setup logging
 logging.basicConfig(
@@ -66,6 +70,17 @@ class BaseScraper(ABC):
         self.logger = logging.getLogger(self.__class__.__name__)
         self.rate_limit_delay = (1, 3)  # Min/max seconds between requests
         
+        # Initialize rate limiter based on source
+        if HAS_ENHANCED_MODULES:
+            if source_name == 'instagram':
+                self.rate_limiter = ScraperRateLimiters.instagram()
+            elif source_name == 'reddit':
+                self.rate_limiter = ScraperRateLimiters.reddit()
+            else:
+                self.rate_limiter = ScraperRateLimiters.osm()
+        else:
+            self.rate_limiter = None
+        
         # Setup requests session with retry logic
         self.session = requests.Session()
         # Use random user agent on initialization
@@ -84,10 +99,17 @@ class BaseScraper(ABC):
         # Initialize enhanced modules if available
         if HAS_ENHANCED_MODULES:
             self.coord_extractor = EnhancedCoordinateExtractor()
-            self.validator = SpotDataValidator()
+            self.validator = EnhancedValidator()
+            self.session_manager = SessionManager(source_name)
+            
+            # Try to load existing session
+            state = self.session_manager.load_session(self.session)
+            if state:
+                self.logger.info(f"Loaded existing session for {source_name}")
         else:
             self.coord_extractor = None
-            self.validator = None
+            self.validator = EnhancedValidator()
+            self.session_manager = None
         
     def get_db_connection(self) -> sqlite3.Connection:
         """Get database connection with proper path handling"""
@@ -96,8 +118,11 @@ class BaseScraper(ABC):
         
     def rate_limit(self):
         """Apply rate limiting between requests"""
-        delay = self._get_random_delay()
-        time.sleep(delay)
+        if self.rate_limiter:
+            self.rate_limiter.wait()
+        else:
+            delay = self._get_random_delay()
+            time.sleep(delay)
         
     def _get_random_delay(self) -> float:
         """Get random delay between min and max"""
@@ -112,16 +137,25 @@ class BaseScraper(ABC):
         self.logger.debug(f"Rotated to user agent: {new_agent[:50]}...")
     
     def make_request(self, url: str, **kwargs) -> requests.Response:
-        """Make HTTP request with automatic user-agent rotation"""
-        # Rotate user agent occasionally (10% chance)
-        if random.random() < 0.1:
-            self._rotate_user_agent()
-        
-        # Apply rate limiting
-        self.rate_limit()
-        
-        # Make request
-        return self.session.get(url, **kwargs)
+        """Make HTTP request with automatic user-agent rotation and retry logic"""
+        # Use enhanced rate limiter if available
+        if self.rate_limiter:
+            def _request():
+                # Rotate user agent occasionally (10% chance)
+                if random.random() < 0.1:
+                    self._rotate_user_agent()
+                return self.session.get(url, **kwargs)
+                
+            response = self.rate_limiter.execute_with_retry(_request)
+            if response is None:
+                raise Exception("Request failed after retries")
+            return response
+        else:
+            # Fallback to simple approach
+            if random.random() < 0.1:
+                self._rotate_user_agent()
+            self.rate_limit()
+            return self.session.get(url, **kwargs)
         
     def save_spot(self, spot_data: Dict) -> bool:
         """Save a single spot to database with validation"""
@@ -213,12 +247,25 @@ class BaseScraper(ABC):
         pass
         
     def run(self, **kwargs):
-        """Run the scraper with error handling"""
+        """Run the scraper with error handling and session persistence"""
         self.logger.info(f"Starting {self.source_name} scraper")
         try:
             spots = self.scrape(**kwargs)
             saved = self.save_spots_batch(spots)
             self.logger.info(f"Saved {saved}/{len(spots)} spots from {self.source_name}")
+            
+            # Save session if manager available
+            if self.session_manager:
+                self.session_manager.save_session(self.session, {
+                    'last_run': datetime.now().isoformat(),
+                    'spots_saved': saved
+                })
+                
+            # Log rate limiter stats if available
+            if self.rate_limiter:
+                stats = self.rate_limiter.get_stats()
+                self.logger.info(f"Rate limiter stats: {stats}")
+                
             return saved
         except Exception as e:
             self.logger.error(f"Scraper failed: {e}")

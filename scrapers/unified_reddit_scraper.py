@@ -11,8 +11,8 @@ import sys
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 
-from base_scraper import BaseScraper
-from nlp_location_extractor import FrenchLocationExtractor
+from .base_scraper import BaseScraper
+from .nlp_location_extractor import FrenchLocationExtractor
 
 # Try to import praw for authenticated mode
 try:
